@@ -1,3 +1,6 @@
 [submodule "indexer"]
 	path = indexer
 	url = https://github.com/traviskirton/indexer.git
+[submodule "theme"]
+	path = theme
+	url = https://github.com/traviskirton/theme
