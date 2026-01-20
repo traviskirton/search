@@ -1,0 +1,5 @@
+
+
+.menu-item[data-type="danger"] {
+  color: var(--mantine-color-red-6);
+}
