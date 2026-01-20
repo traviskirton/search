@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { MantineProvider } from '@mantine/core'
 import App from './App.tsx'
 import '@mantine/core/styles.css'
+import '../mantine-theme.css'
 import './global.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
