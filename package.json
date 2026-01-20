@@ -1,5 +1,5 @@
 {
-  "name": "base",
+  "name": "Search",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@mantine/core": "^8.3.12",
     "@mantine/hooks": "^8.3.12",
+    "minisearch": "^7.2.0",
     "postcss": "^8.5.6",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
