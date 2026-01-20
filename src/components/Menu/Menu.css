@@ -1,5 +1,12 @@
-
+.menu-item:hover,
+.menu-item[data-hovered] {
+  background-color: var(--mantine-color-blue-1);
+}
 
 .menu-item[data-type="danger"] {
   color: var(--mantine-color-red-6);
+}
+
+.menu-divider {
+  border-top-color: var(--mantine-color-gray-4) !important;
 }

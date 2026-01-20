@@ -1,4 +1,4 @@
-import { Menu as MantineMenu, MenuProps as MantineMenuProps } from '@mantine/core'
+import { Menu as MantineMenu, MenuProps as MantineMenuProps, useMantineTheme, MantineTheme } from '@mantine/core'
 import { ReactNode } from 'react'
 import './Menu.css'
 
@@ -24,19 +24,26 @@ function isSubmenu(item: MenuItem): item is { label: string; items: MenuItem[] }
   return 'items' in item
 }
 
-function renderMenuItem(item: MenuItem, index: number) {
+function renderMenuItem(item: MenuItem, index: number, theme: MantineTheme) {
   if (isDivider(item)) {
-    return <MantineMenu.Divider key={index} />
+    return <MantineMenu.Divider key={index} className="menu-divider"/>
   }
 
   if (isSubmenu(item)) {
     return (
       <MantineMenu.Sub key={index}>
         <MantineMenu.Sub.Target>
-          <MantineMenu.Sub.Item>{item.label}</MantineMenu.Sub.Item>
+          <MantineMenu.Sub.Item
+            fz="md"
+            fw={theme.fontWeights.medium}
+            lts={theme.letterSpacing.small}
+            className='menu-item'
+          >
+            {item.label}
+          </MantineMenu.Sub.Item>
         </MantineMenu.Sub.Target>
         <MantineMenu.Sub.Dropdown>
-          {item.items.map((subItem, subIndex) => renderMenuItem(subItem, subIndex))}
+          {item.items.map((subItem, subIndex) => renderMenuItem(subItem, subIndex, theme))}
         </MantineMenu.Sub.Dropdown>
       </MantineMenu.Sub>
     )
@@ -44,9 +51,13 @@ function renderMenuItem(item: MenuItem, index: number) {
 
   return (
     <MantineMenu.Item
+      fz="md"
+      fw={theme.fontWeights.medium}
+      lts={theme.letterSpacing.small}
       key={index}
       onClick={item.onClick}
       data-type={item.type}
+      className='menu-item'
       style={{ borderRadius: 'var(--mantine-radius-sm)' }}
     >
       {item.label}
@@ -55,6 +66,8 @@ function renderMenuItem(item: MenuItem, index: number) {
 }
 
 export function Menu({ items, children, defaultOpened, position = 'bottom-end' }: MenuProps) {
+  const theme = useMantineTheme()
+
   return (
     <MantineMenu
       position={position}
@@ -62,17 +75,10 @@ export function Menu({ items, children, defaultOpened, position = 'bottom-end' }
       defaultOpened={defaultOpened}
       shadow='lg'
       radius='md'
-      
-      classNames={{
-        dropdown: 'menu-dropdown',
-        item: 'menu-item',
-        divider: 'menu-divider',
-        label: 'menu-label',
-      }}
     >
       <MantineMenu.Target>{children}</MantineMenu.Target>
-      <MantineMenu.Dropdown>
-        {items.map((item, index) => renderMenuItem(item, index))}
+      <MantineMenu.Dropdown className='menu-dropdown'>
+        {items.map((item, index) => renderMenuItem(item, index, theme))}
       </MantineMenu.Dropdown>
     </MantineMenu>
   )
