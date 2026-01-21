@@ -1,8 +1,9 @@
-import { Container, Title, TextInput, Stack, Card, Text, Badge, Group, Loader } from '@mantine/core'
+import { Container, Title, TextInput, Stack, Text, Loader } from '@mantine/core'
 import { useState, useEffect } from 'react'
 import MiniSearch from 'minisearch'
+import { SearchResult } from './components/SearchResult'
 
-interface SearchResult {
+interface SearchResultData {
   id: string
   type: string
   name: string
@@ -12,7 +13,7 @@ interface SearchResult {
 
 function App() {
   const [search, setSearch] = useState('')
-  const [results, setResults] = useState<SearchResult[]>([])
+  const [results, setResults] = useState<SearchResultData[]>([])
   const [index, setIndex] = useState<MiniSearch | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -66,19 +67,12 @@ function App() {
       ) : (
         <Stack gap="xs">
           {results.map((result) => (
-            <Card key={result.id} padding="sm" withBorder>
-              <Group justify="space-between" mb={4}>
-                <Text fw={600}>{result.name}</Text>
-                <Badge size="sm" variant="light">
-                  {result.type}
-                </Badge>
-              </Group>
-              {result.description && (
-                <Text size="sm" c="dimmed" lineClamp={2}>
-                  {result.description}
-                </Text>
-              )}
-            </Card>
+            <SearchResult
+              key={result.id}
+              title={result.name}
+              description={result.description}
+              type={result.type}
+            />
           ))}
           {search && results.length === 0 && (
             <Text c="dimmed" ta="center" py="md">
