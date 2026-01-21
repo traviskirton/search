@@ -9,3 +9,11 @@ To switch: `snap <tag>`
 **Simple Search**
 
 Basic search UI with results display.
+
+---
+
+## v2-dataline
+
+**DataLine Component**
+
+Search results with tags and links via DataLine component.
