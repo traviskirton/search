@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react'
 import { DotsThreeVerticalIcon, UserCircleIcon } from '@phosphor-icons/react'
-import { ActionIcon, Group, Stack, Text, UnstyledButton, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Box, Group, Stack, Text, UnstyledButton, useMantineTheme } from '@mantine/core'
 import { Menu, MenuItem } from '../Menu'
 import { TypeIcon } from '../TypeIcon'
 import classes from './SearchResult.module.css'
@@ -7,7 +8,7 @@ import classes from './SearchResult.module.css'
 export interface SearchResultProps {
   title: string
   description?: string
-  dataLine?: string
+  dataLine?: ReactNode
   type?: string
   updatedBy?: string
   updatedAt?: string
@@ -37,15 +38,17 @@ export function SearchResult({
       className={classes.result}
       bg="white"
       pt="sm"
-      pb="md"
-      px="md"
+      pb="sm"
+      pl="sm"
+      pr="md"
       bd="1px solid gray.3"
       bdrs="md"
       w="100%"
     >
-      <Stack gap="xs">
-        {/* Title Row */}
-        <Group justify="space-between" align="center" gap="xxxs">
+      <Stack gap="md">
+        <Stack gap={theme.spacing.xxxs}>
+          {/* Title Row */}
+        <Group justify="space-between" align="center" gap="xxxs" pl={theme.spacing.xxs}>
           <Text
             fw={theme.fontWeights.semibold}
             fz="xl"
@@ -63,7 +66,7 @@ export function SearchResult({
 
         {/* Description & Data */}
         {(description || dataLine) && (
-          <Stack gap="sm">
+          <Stack gap="xs" pl={theme.spacing.xxs}>
             {description && (
               <Text
                 fz="md"
@@ -74,16 +77,14 @@ export function SearchResult({
               </Text>
             )}
             {dataLine && (
-              <Text fz="sm" c="gray." fw={theme.fontWeights.medium}>
-                {dataLine}
-              </Text>
+              <Box w="100%" h={16} style={{ display: 'flex', alignItems: 'center' }}>{dataLine}</Box>
             )}
           </Stack>
-        )}
+        )}</Stack>
 
         {/* By Line */}
         {(type || updatedBy || updatedAt) && (
-          <Group justify="space-between" align="center">
+          <Group justify="space-between" align="start">
             {type && (
               <Group gap="xxs" p="xxxs">
                 <TypeIcon type={type.toLowerCase()} />

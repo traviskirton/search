@@ -1,5 +1,5 @@
 import { Container, Title, Stack, Box, Group, ActionIcon, Text } from '@mantine/core'
-import { SearchResult } from './components/SearchResult/index'
+import { SearchResult, DataLine } from './components/SearchResult'
 import { Menu } from './components/Menu'
 import { TypeIcon, entityTypes } from './components/TypeIcon'
 import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
@@ -52,13 +52,23 @@ function Components() {
               <SearchResult
                 title="Al Pacino"
                 description="An American actor renowned for his intense performances and portrayal of Michael Corleone in The Godfather trilogy."
-                dataLine="theater, film-star, academy-award-winner"
+                dataLine={
+                  <DataLine
+                    tags={['theater', 'film-star', 'academy-award-winner']}
+                    links={[{ url: 'https://en.wikipedia.org/wiki/Al_Pacino', title: 'Wikipedia', type: 'wiki' }]}
+                  />
+                }
                 type="Person"
               />
               <SearchResult
                 title="The Godfather"
                 description="A 1972 American crime film directed by Francis Ford Coppola, based on Mario Puzo's novel of the same name."
-                dataLine="crime, drama, mafia"
+                dataLine={
+                  <DataLine
+                    tags={['crime', 'drama', 'mafia']}
+                    links={[{ url: 'https://www.imdb.com/title/tt0068646/', title: 'IMDb', type: 'database' }]}
+                  />
+                }
                 type="Movie"
               />
               <SearchResult
