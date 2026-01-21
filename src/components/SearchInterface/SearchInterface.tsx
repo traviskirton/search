@@ -13,20 +13,11 @@ import { CaretDownIcon, FunnelIcon, XIcon, PlusIcon, ExclamationMarkIcon } from 
 import { useState, useCallback } from 'react'
 import { Menu } from '../Menu'
 import { TAG_TAXONOMY, tagToLabel } from '../../tag-taxonomy'
+import type { FilterModifier, SelectedFilter } from '../../types'
 
 type SortOption = 'Relevance' | 'Alphabetical'
 
 const sortOptions: SortOption[] = ['Relevance', 'Alphabetical']
-
-// Filter modifier types: none (OR), include (MUST +), exclude (NOT !)
-export type FilterModifier = 'none' | 'include' | 'exclude'
-
-// A selected filter with its modifier
-export interface SelectedFilter {
-  category: string
-  tag: string
-  modifier: FilterModifier
-}
 
 export interface SearchInterfaceProps {
   value: string
