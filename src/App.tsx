@@ -1,89 +1,31 @@
-import { Box, Title, TextInput, Text, Loader } from '@mantine/core'
-import { useState, useEffect } from 'react'
-import MiniSearch from 'minisearch'
-import { SearchResult, DataLine, Link } from './components/SearchResult'
-
-interface SearchResultData {
-  id: string
-  type: string
-  name: string
-  description: string
-  tags?: string[]
-  links?: Link[]
-  score: number
-}
+import { Box, Title, Text, Loader, useMantineTheme } from '@mantine/core'
+import { SearchResult, DataLine } from './components/SearchResult'
+import { SearchInterface } from './components/SearchInterface'
+import { useSearch } from './hooks/useSearch'
 
 function App() {
-  const [search, setSearch] = useState('')
-  const [results, setResults] = useState<SearchResultData[]>([])
-  const [index, setIndex] = useState<MiniSearch | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetch('/search-index.json')
-      .then((res) => res.text())
-      .then((data) => {
-        const loadedIndex = MiniSearch.loadJSON(data, {
-          fields: ['name', 'description', 'body', 'aliases', 'tags', 'facetText', 'related'],
-        })
-        setIndex(loadedIndex)
-        setLoading(false)
-      })
-  }, [])
-
-  useEffect(() => {
-    if (!index || !search.trim()) {
-      setResults([])
-      return
-    }
-
-    const searchResults = index.search(search, {
-      prefix: true,
-      fuzzy: search.length > 3 ? 0.2 : false,
-      boost: { name: 10, aliases: 5, related: 3, tags: 2, description: 1 },
-    })
-
-    setResults(
-      searchResults.slice(0, 40).map((r) => {
-        const result = r as unknown as {
-          type: string
-          name: string
-          description: string
-          tagsArray?: string[]
-          links?: Link[]
-        }
-        return {
-          id: r.id,
-          type: result.type,
-          name: result.name,
-          description: result.description,
-          tags: result.tagsArray,
-          links: result.links,
-          score: r.score,
-        }
-      })
-    )
-  }, [search, index])
+  const theme = useMantineTheme()
+  const { search, setSearch, filters, setFilters, results, availableTags, loading } = useSearch()
 
   return (
-    <Box p="xl" w="100%">
+    <Box p={theme.spacing.xxxl} w="100%">
       <Title mb="lg">{__APP_NAME__}</Title>
-      <TextInput
-        placeholder="Search..."
+      <SearchInterface
         value={search}
-        onChange={(e) => setSearch(e.currentTarget.value)}
-        size="md"
-        mb="md"
-        w="100%"
+        onChange={setSearch}
+        filters={filters}
+        onFiltersChange={setFilters}
+        availableTags={availableTags}
       />
       {loading ? (
         <Loader size="sm" />
       ) : (
         <Box
+          mt="md"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 360px))',
-            gridAutoRows: 180,
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 375px))',
+            gridAutoRows: 200,
             gap: 'var(--mantine-spacing-sm)',
           }}
         >
@@ -98,7 +40,7 @@ function App() {
           ))}
         </Box>
       )}
-      {!loading && search && results.length === 0 && (
+      {!loading && (search || filters.length > 0) && results.length === 0 && (
         <Text c="dimmed" ta="center" py="md">
           No results found
         </Text>
