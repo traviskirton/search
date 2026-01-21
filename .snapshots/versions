@@ -17,3 +17,11 @@ Basic search UI with results display.
 **DataLine Component**
 
 Search results with tags and links via DataLine component.
+
+---
+
+## v3-wide-layout
+
+**Wide Grid Layout**
+
+Full-width responsive grid with fixed-height cards.
