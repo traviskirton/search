@@ -3,6 +3,10 @@ import type { Link } from './components/SearchResult'
 // Filter modifier types: none (OR), include (MUST +), exclude (NOT !)
 export type FilterModifier = 'none' | 'include' | 'exclude'
 
+// Sort options
+export type SortOption = 'relevance' | 'alphabetical' | 'type'
+export type SortDirection = 'asc' | 'desc'
+
 // A selected filter with its modifier
 export interface SelectedFilter {
   category: string

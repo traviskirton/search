@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import MiniSearch from 'minisearch'
 import { TAG_TAXONOMY } from '../tag-taxonomy'
-import type { Entity, SelectedFilter, SearchResultData } from '../types'
+import type { Entity, SelectedFilter, SearchResultData, SortOption, SortDirection } from '../types'
 import type { Link } from '../components/SearchResult'
 
 export interface UseSearchResult {
@@ -12,6 +12,10 @@ export interface UseSearchResult {
   results: SearchResultData[]
   availableTags: Record<string, Set<string>>
   loading: boolean
+  sortBy: SortOption
+  setSortBy: (sort: SortOption) => void
+  sortDirection: SortDirection
+  setSortDirection: (dir: SortDirection) => void
 }
 
 export function useSearch(): UseSearchResult {
@@ -21,6 +25,8 @@ export function useSearch(): UseSearchResult {
   const [allEntities, setAllEntities] = useState<Entity[]>([])
   const [index, setIndex] = useState<MiniSearch | null>(null)
   const [loading, setLoading] = useState(true)
+  const [sortBy, setSortBy] = useState<SortOption>('relevance')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
 
   // Load the search index
   useEffect(() => {
@@ -246,14 +252,29 @@ export function useSearch(): UseSearchResult {
       })
     }
 
-    if (search.trim()) {
-      searchResults.sort((a, b) => b.score - a.score)
-    } else {
-      searchResults.sort((a, b) => a.name.localeCompare(b.name))
+    // Apply sorting
+    const dir = sortDirection === 'asc' ? 1 : -1
+    switch (sortBy) {
+      case 'relevance':
+        // For relevance, desc means highest score first
+        searchResults.sort((a, b) => dir * (b.score - a.score))
+        break
+      case 'alphabetical':
+        // For alphabetical, asc means A-Z
+        searchResults.sort((a, b) => dir * a.name.localeCompare(b.name))
+        break
+      case 'type':
+        // Sort by type, then by name
+        searchResults.sort((a, b) => {
+          const typeCompare = a.type.localeCompare(b.type)
+          if (typeCompare !== 0) return dir * typeCompare
+          return a.name.localeCompare(b.name)
+        })
+        break
     }
 
     setResults(searchResults.slice(0, 40))
-  }, [search, filters, index, allEntities, entityMatchesFilters])
+  }, [search, filters, index, allEntities, entityMatchesFilters, sortBy, sortDirection])
 
   return {
     search,
@@ -263,5 +284,9 @@ export function useSearch(): UseSearchResult {
     results,
     availableTags,
     loading,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
   }
 }

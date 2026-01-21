@@ -9,15 +9,26 @@ import {
   TextInput,
   useMantineTheme,
 } from '@mantine/core'
-import { CaretDownIcon, FunnelIcon, XIcon, PlusIcon, ExclamationMarkIcon } from '@phosphor-icons/react'
-import { useState, useCallback } from 'react'
+import {
+  CaretDownIcon,
+  CaretUpIcon,
+  FunnelIcon,
+  XIcon,
+  PlusIcon,
+  ExclamationMarkIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+} from '@phosphor-icons/react'
+import { useState, useCallback, useEffect } from 'react'
 import { Menu } from '../Menu'
 import { TAG_TAXONOMY, tagToLabel } from '../../tag-taxonomy'
-import type { FilterModifier, SelectedFilter } from '../../types'
+import type { FilterModifier, SelectedFilter, SortOption, SortDirection } from '../../types'
 
-type SortOption = 'Relevance' | 'Alphabetical'
-
-const sortOptions: SortOption[] = ['Relevance', 'Alphabetical']
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+  { value: 'relevance', label: 'Relevance' },
+  { value: 'alphabetical', label: 'Alphabetical' },
+  { value: 'type', label: 'Type' },
+]
 
 export interface SearchInterfaceProps {
   value: string
@@ -25,6 +36,10 @@ export interface SearchInterfaceProps {
   filters?: SelectedFilter[]
   onFiltersChange?: (filters: SelectedFilter[]) => void
   availableTags?: Record<string, Set<string>>
+  sortBy: SortOption
+  onSortByChange: (sort: SortOption) => void
+  sortDirection: SortDirection
+  onSortDirectionChange: (dir: SortDirection) => void
 }
 
 export function SearchInterface({
@@ -33,10 +48,43 @@ export function SearchInterface({
   filters = [],
   onFiltersChange,
   availableTags,
+  sortBy,
+  onSortByChange,
+  sortDirection,
+  onSortDirectionChange,
 }: SearchInterfaceProps) {
-  const [sortBy, setSortBy] = useState<SortOption>('Relevance')
   const [selectedCategory, setSelectedCategory] = useState<string>('type')
+  const [filtersVisible, setFiltersVisible] = useState(false)
+  const [optionHeld, setOptionHeld] = useState(false)
+  const [filterButtonHovered, setFilterButtonHovered] = useState(false)
   const theme = useMantineTheme()
+
+  // Track option/alt key state and keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey) setOptionHeld(true)
+
+      // Don't handle shortcuts when typing in an input
+      const target = e.target as HTMLElement
+      const isTyping = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
+
+      if (e.key === 'Escape' && filtersVisible) {
+        setFiltersVisible(false)
+      } else if (e.key === 'f' && !isTyping) {
+        e.preventDefault()
+        setFiltersVisible((v) => !v)
+      }
+    }
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (!e.altKey) setOptionHeld(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [filtersVisible])
 
   // Get tags for the currently selected category, filtered by availability
   const currentCategory = TAG_TAXONOMY.find((c) => c.id === selectedCategory)
@@ -113,8 +161,30 @@ export function SearchInterface({
     onFiltersChange([])
   }, [onFiltersChange])
 
+  // Handle filter button click
+  const handleFilterButtonClick = useCallback((e: React.MouseEvent) => {
+    if (e.altKey && filters.length > 0) {
+      // Option+click: clear all filters
+      handleClearFilters()
+    } else {
+      // Normal click: toggle visibility
+      setFiltersVisible((v) => !v)
+    }
+  }, [filters.length, handleClearFilters])
+
+  // Toggle sort direction
+  const handleToggleSortDirection = useCallback(() => {
+    onSortDirectionChange(sortDirection === 'asc' ? 'desc' : 'asc')
+  }, [sortDirection, onSortDirectionChange])
+
+  // Determine filter button color (red only when option held AND hovering AND has filters)
+  const filterButtonColor = optionHeld && filterButtonHovered && filters.length > 0 ? 'red' : filters.length > 0 ? 'blue' : 'gray'
+
+  // Get current sort label
+  const currentSortLabel = SORT_OPTIONS.find((o) => o.value === sortBy)?.label ?? 'Sort'
+
   return (
-    <Paper shadow="sm" p="sm" radius="md" bd="1px solid gray.4">
+    <Paper shadow={filtersVisible ? 'sm' : undefined} p="sm" radius="md" bd={filtersVisible ? '1px solid gray.4' : undefined}>
       <Stack gap="sm">
         {/* Search input */}
         <TextInput
@@ -129,10 +199,12 @@ export function SearchInterface({
         <Group gap="sm" justify="space-between" p="0" m="0">
           <ActionIcon
             variant="subtle"
-            color={filters.length > 0 ? 'blue' : 'gray'}
+            color={filterButtonColor}
             size="lg"
-            onClick={handleClearFilters}
-            title={filters.length > 0 ? 'Clear all filters' : 'Filters'}
+            onClick={handleFilterButtonClick}
+            onMouseEnter={() => setFilterButtonHovered(true)}
+            onMouseLeave={() => setFilterButtonHovered(false)}
+            title={optionHeld && filterButtonHovered && filters.length > 0 ? 'Clear all filters (Option+Click)' : filtersVisible ? 'Hide filters' : 'Show filters'}
           >
             <FunnelIcon size={16} />
           </ActionIcon>
@@ -151,83 +223,90 @@ export function SearchInterface({
             </Group>
           </ScrollArea>
 
-          {/* Sort controls */}
-          <Group gap={theme.spacing.xxs}>
-            <Button size="sm" variant="subtle" color="dark">
-              Date
-            </Button>
+          {/* Sort controls - Button Group */}
+          <Button.Group>
             <Menu
-              items={sortOptions.map((option) => ({
-                label: option,
-                selected: option === sortBy,
-                onClick: () => setSortBy(option),
+              items={SORT_OPTIONS.map((option) => ({
+                label: option.label,
+                selected: option.value === sortBy,
+                onClick: () => onSortByChange(option.value),
               }))}
               position="bottom-end"
             >
               <Button
                 size="sm"
-                variant="subtle"
+                variant="outline"
                 color="dark"
-                rightSection={<CaretDownIcon size={14} />}
               >
-                {sortBy}
+                {currentSortLabel}
               </Button>
             </Menu>
-          </Group>
+            <Button
+              size="sm"
+              variant="outline"
+              color="dark"
+              onClick={handleToggleSortDirection}
+              px="xs"
+            >
+              {sortDirection === 'asc' ? <ArrowUpIcon size={14} /> : <ArrowDownIcon size={14} />}
+            </Button>
+          </Button.Group>
         </Group>
-        <Stack gap={theme.spacing.xxxs}>
-        {/* Category buttons */}
-        <ScrollArea scrollbarSize={4} offsetScrollbars>
-          <Group gap="xs" wrap="nowrap">
-            {TAG_TAXONOMY.map((category) => {
-              const isSelected = category.id === selectedCategory
-              const hasFiltersInCategory = filters.some(
-                (f) => f.category === category.id
-              )
-              return (
-                <Button
-                  key={category.id}
-                  variant={isSelected ? 'light' : 'subtle'} 
-                  color={hasFiltersInCategory ? 'blue' : 'dark'}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category.id)}
-                >
-                  {category.label}
-                </Button>
-              )
-            })}
-          </Group>
-        </ScrollArea>
-        <Divider />
-        {/* Tags for selected category */}
-        <Group gap="xs" wrap="wrap" pt={theme.spacing.xxs}>
-          {currentTags.map((tag) => {
-            const filter = getTagFilter(tag)
-            const isSelected = !!filter
+        {filtersVisible && (
+          <Stack gap={theme.spacing.xxxs}>
+            {/* Category buttons */}
+            <ScrollArea scrollbarSize={4} offsetScrollbars>
+              <Group gap="xs" wrap="nowrap">
+                {TAG_TAXONOMY.map((category) => {
+                  const isSelected = category.id === selectedCategory
+                  const hasFiltersInCategory = filters.some(
+                    (f) => f.category === category.id
+                  )
+                  return (
+                    <Button
+                      key={category.id}
+                      variant={isSelected ? 'light' : 'subtle'}
+                      color={hasFiltersInCategory ? 'blue' : 'dark'}
+                      size="sm"
+                      onClick={() => setSelectedCategory(category.id)}
+                    >
+                      {category.label}
+                    </Button>
+                  )
+                })}
+              </Group>
+            </ScrollArea>
+            <Divider />
+            {/* Tags for selected category */}
+            <Group gap="xs" wrap="wrap" pt={theme.spacing.xxs}>
+              {currentTags.map((tag) => {
+                const filter = getTagFilter(tag)
+                const isSelected = !!filter
 
-            return (
-              <Button
-                key={tag}
-                variant={isSelected ? 'light' : 'subtle'}
-                color={
-                  isSelected
-                    ? filter.modifier === 'exclude'
-                      ? 'red'
-                      : filter.modifier === 'include'
-                        ? 'green'
-                        : 'blue'
-                    : 'dark'
-                }
-                size="xs"
-                onClick={() => handleTagClick(tag)}
-                style={{ whiteSpace: 'nowrap' }}
-              >
-                {tagToLabel(tag)}
-              </Button>
-            )
-          })}
-        </Group>
-        </Stack>
+                return (
+                  <Button
+                    key={tag}
+                    variant={isSelected ? 'light' : 'subtle'}
+                    color={
+                      isSelected
+                        ? filter.modifier === 'exclude'
+                          ? 'red'
+                          : filter.modifier === 'include'
+                            ? 'green'
+                            : 'blue'
+                        : 'dark'
+                    }
+                    size="xs"
+                    onClick={() => handleTagClick(tag)}
+                    style={{ whiteSpace: 'nowrap' }}
+                  >
+                    {tagToLabel(tag)}
+                  </Button>
+                )
+              })}
+            </Group>
+          </Stack>
+        )}
       </Stack>
     </Paper>
   )

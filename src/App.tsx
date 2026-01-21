@@ -5,7 +5,19 @@ import { useSearch } from './hooks/useSearch'
 
 function App() {
   const theme = useMantineTheme()
-  const { search, setSearch, filters, setFilters, results, availableTags, loading } = useSearch()
+  const {
+    search,
+    setSearch,
+    filters,
+    setFilters,
+    results,
+    availableTags,
+    loading,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection,
+  } = useSearch()
 
   return (
     <Box p={theme.spacing.xxxl} w="100%">
@@ -16,6 +28,10 @@ function App() {
         filters={filters}
         onFiltersChange={setFilters}
         availableTags={availableTags}
+        sortBy={sortBy}
+        onSortByChange={setSortBy}
+        sortDirection={sortDirection}
+        onSortDirectionChange={setSortDirection}
       />
       {loading ? (
         <Loader size="sm" />
