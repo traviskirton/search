@@ -33,3 +33,11 @@ Full-width responsive grid with fixed-height cards.
 **Filter & Sort Interface**
 
 Category-based filter UI with tag selection, ribbon showing active filters with modifiers (none/+/!), and sorting by relevance/alphabetical/type. Press 'f' to toggle filters, Escape to close. Option+click filter icon to clear all.
+
+---
+
+## v5-cleanup
+
+**Links, CORS & Cleanup**
+
+Added links, CORS support, and general code cleanup.
