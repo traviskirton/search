@@ -10,8 +10,6 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import {
-  CaretDownIcon,
-  CaretUpIcon,
   FunnelIcon,
   XIcon,
   PlusIcon,

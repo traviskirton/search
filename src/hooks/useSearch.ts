@@ -26,7 +26,7 @@ export function useSearch(): UseSearchResult {
   const [index, setIndex] = useState<MiniSearch | null>(null)
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<SortOption>('relevance')
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
 
   // Load the search index
   useEffect(() => {

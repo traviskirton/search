@@ -1,5 +1,6 @@
 import { LinkIcon } from '@phosphor-icons/react'
-import { ActionIcon, Badge, Group, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Badge, Group, Text, useMantineTheme } from '@mantine/core'
+import { Menu } from '../Menu'
 
 export interface Link {
   url: string
@@ -18,6 +19,10 @@ export function DataLine({ tags, links }: DataLineProps) {
 
   if (!hasContent) return null
 
+  const handleLinkClick = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
   return (
     <Group w="100%" justify="space-between" wrap="nowrap" style={{ overflow: 'hidden' }}>
       <Group gap="xxs" wrap="nowrap" style={{ overflow: 'hidden', flex: 1 }}>
@@ -28,9 +33,37 @@ export function DataLine({ tags, links }: DataLineProps) {
         ))}
       </Group>
       {links && links.length > 0 && (
-        <ActionIcon variant="subtle" color="gray" size="xs">
-          <LinkIcon size={theme.iconSizes.xsmall} />
-        </ActionIcon>
+        links.length === 1 ? (
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleLinkClick(links[0].url)
+            }}
+            title={links[0].title}
+          >
+            <LinkIcon size={theme.iconSizes.xsmall} />
+          </ActionIcon>
+        ) : (
+          <Menu
+            items={links.map((link) => ({
+              label: link.title || link.type,
+              onClick: () => handleLinkClick(link.url),
+            }))}
+            position="bottom-end"
+          >
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="xs"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <LinkIcon size={theme.iconSizes.xsmall} />
+            </ActionIcon>
+          </Menu>
+        )
       )}
     </Group>
   )
