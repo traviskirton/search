@@ -45,7 +45,7 @@ export function SearchResult({
       bdrs="md"
       w="100%"
     >
-      <Stack gap="md">
+      <Stack gap="sm">
         <Stack gap={theme.spacing.xxxs}>
           {/* Title Row */}
         <Group justify="space-between" align="center" gap="xxxs" pl={theme.spacing.xxs}>
@@ -80,7 +80,9 @@ export function SearchResult({
               <Box w="100%" h={16} style={{ display: 'flex', alignItems: 'center' }}>{dataLine}</Box>
             )}
           </Stack>
-        )}</Stack>
+        )}
+        
+        </Stack>
 
         {/* By Line */}
         {(type || updatedBy || updatedAt) && (

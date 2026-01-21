@@ -1,13 +1,15 @@
 import { Container, Title, TextInput, Stack, Text, Loader } from '@mantine/core'
 import { useState, useEffect } from 'react'
 import MiniSearch from 'minisearch'
-import { SearchResult } from './components/SearchResult'
+import { SearchResult, DataLine, Link } from './components/SearchResult'
 
 interface SearchResultData {
   id: string
   type: string
   name: string
   description: string
+  tags?: string[]
+  links?: Link[]
   score: number
 }
 
@@ -42,13 +44,24 @@ function App() {
     })
 
     setResults(
-      searchResults.slice(0, 20).map((r) => ({
-        id: r.id,
-        type: (r as unknown as { type: string }).type,
-        name: (r as unknown as { name: string }).name,
-        description: (r as unknown as { description: string }).description,
-        score: r.score,
-      }))
+      searchResults.slice(0, 20).map((r) => {
+        const result = r as unknown as {
+          type: string
+          name: string
+          description: string
+          tagsArray?: string[]
+          links?: Link[]
+        }
+        return {
+          id: r.id,
+          type: result.type,
+          name: result.name,
+          description: result.description,
+          tags: result.tagsArray,
+          links: result.links,
+          score: r.score,
+        }
+      })
     )
   }, [search, index])
 
@@ -72,6 +85,7 @@ function App() {
               title={result.name}
               description={result.description}
               type={result.type}
+              dataLine={<DataLine tags={result.tags?.slice(0, 3)} links={result.links} />}
             />
           ))}
           {search && results.length === 0 && (
