@@ -1,11 +1,12 @@
 import { Menu as MantineMenu, MenuProps as MantineMenuProps, useMantineTheme, MantineTheme } from '@mantine/core'
+import { CheckIcon } from '@phosphor-icons/react'
 import { ReactNode } from 'react'
 import './Menu.css'
 
 export type MenuItemType = 'default' | 'danger'
 
 export type MenuItem =
-  | { label: string; onClick?: () => void; type?: MenuItemType }
+  | { label: string; onClick?: () => void; type?: MenuItemType; selected?: boolean }
   | { label: string; items: MenuItem[] }
   | { divider: true }
 
@@ -59,6 +60,7 @@ function renderMenuItem(item: MenuItem, index: number, theme: MantineTheme) {
       data-type={item.type}
       className='menu-item'
       style={{ borderRadius: 'var(--mantine-radius-sm)' }}
+      rightSection={item.selected ? <CheckIcon size={14} /> : undefined}
     >
       {item.label}
     </MantineMenu.Item>
