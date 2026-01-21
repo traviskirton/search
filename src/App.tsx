@@ -1,4 +1,4 @@
-import { Container, Title, TextInput, Stack, Text, Loader } from '@mantine/core'
+import { Box, Title, TextInput, Text, Loader } from '@mantine/core'
 import { useState, useEffect } from 'react'
 import MiniSearch from 'minisearch'
 import { SearchResult, DataLine, Link } from './components/SearchResult'
@@ -44,7 +44,7 @@ function App() {
     })
 
     setResults(
-      searchResults.slice(0, 20).map((r) => {
+      searchResults.slice(0, 40).map((r) => {
         const result = r as unknown as {
           type: string
           name: string
@@ -66,7 +66,7 @@ function App() {
   }, [search, index])
 
   return (
-    <Container size="sm" py="xl">
+    <Box p="xl" w="100%">
       <Title mb="lg">{__APP_NAME__}</Title>
       <TextInput
         placeholder="Search..."
@@ -74,28 +74,36 @@ function App() {
         onChange={(e) => setSearch(e.currentTarget.value)}
         size="md"
         mb="md"
+        w="100%"
       />
       {loading ? (
         <Loader size="sm" />
       ) : (
-        <Stack gap="xs">
+        <Box
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 360px))',
+            gridAutoRows: 180,
+            gap: 'var(--mantine-spacing-sm)',
+          }}
+        >
           {results.map((result) => (
             <SearchResult
               key={result.id}
               title={result.name}
               description={result.description}
               type={result.type}
-              dataLine={<DataLine tags={result.tags?.slice(0, 3)} links={result.links} />}
+              dataLine={<DataLine tags={result.tags?.slice(0, 1)} links={result.links} />}
             />
           ))}
-          {search && results.length === 0 && (
-            <Text c="dimmed" ta="center" py="md">
-              No results found
-            </Text>
-          )}
-        </Stack>
+        </Box>
       )}
-    </Container>
+      {!loading && search && results.length === 0 && (
+        <Text c="dimmed" ta="center" py="md">
+          No results found
+        </Text>
+      )}
+    </Box>
   )
 }
 

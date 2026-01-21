@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { DotsThreeVerticalIcon, UserCircleIcon } from '@phosphor-icons/react'
-import { ActionIcon, Box, Group, Stack, Text, UnstyledButton, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Group, Stack, Text, UnstyledButton, useMantineTheme } from '@mantine/core'
 import { Menu, MenuItem } from '../Menu'
 import { TypeIcon } from '../TypeIcon'
 import classes from './SearchResult.module.css'
@@ -44,9 +44,10 @@ export function SearchResult({
       bd="1px solid gray.3"
       bdrs="md"
       w="100%"
+      h="100%"
     >
-      <Stack gap="sm">
-        <Stack gap={theme.spacing.xxxs}>
+      <Stack gap="xs" h="100%">
+        <Stack gap={theme.spacing.xxxs} style={{ flex: 1 }}>
           {/* Title Row */}
         <Group justify="space-between" align="center" gap="xxxs" pl={theme.spacing.xxs}>
           <Text
@@ -66,19 +67,18 @@ export function SearchResult({
 
         {/* Description & Data */}
         {(description || dataLine) && (
-          <Stack gap="xs" pl={theme.spacing.xxs}>
+          <Stack gap="xs" pl={theme.spacing.xxs} style={{ flex: 1 }}>
             {description && (
               <Text
                 fz="md"
                 c="gray.9"
-                lineClamp={2}
+                lineClamp={5}
+                style={{ flex: 1 }}
               >
                 {description}
               </Text>
             )}
-            {dataLine && (
-              <Box w="100%" h={16} style={{ display: 'flex', alignItems: 'center' }}>{dataLine}</Box>
-            )}
+            {dataLine}
           </Stack>
         )}
         

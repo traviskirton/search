@@ -19,8 +19,8 @@ export function DataLine({ tags, links }: DataLineProps) {
   if (!hasContent) return null
 
   return (
-    <Group w="100%" justify="space-between">
-      <Group gap="xxs" wrap="nowrap" style={{ margin: 0, padding: 0 }}>
+    <Group w="100%" justify="space-between" wrap="nowrap" style={{ overflow: 'hidden' }}>
+      <Group gap="xxs" wrap="nowrap" style={{ overflow: 'hidden', flex: 1 }}>
         {tags?.map((tag) => (
           <Badge key={tag} variant="light" size="xs" color="gray" style={{ cursor: 'inherit' }}>
             {tag}
