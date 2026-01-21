@@ -25,3 +25,11 @@ Search results with tags and links via DataLine component.
 **Wide Grid Layout**
 
 Full-width responsive grid with fixed-height cards.
+
+---
+
+## v4-filter-sort
+
+**Filter & Sort Interface**
+
+Category-based filter UI with tag selection, ribbon showing active filters with modifiers (none/+/!), and sorting by relevance/alphabetical/type. Press 'f' to toggle filters, Escape to close. Option+click filter icon to clear all.
