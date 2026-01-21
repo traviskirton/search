@@ -1,0 +1,8 @@
+.result {
+  transition: box-shadow 330ms ease-in-out;
+}
+
+.result:hover {
+  box-shadow: var(--mantine-shadow-md);
+  transition: box-shadow 50ms ease-in;
+}

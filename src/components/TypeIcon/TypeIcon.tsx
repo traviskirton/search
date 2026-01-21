@@ -1,5 +1,4 @@
 import {
-  UserIcon,
   MapPinIcon,
   PackageIcon,
   BuildingsIcon,

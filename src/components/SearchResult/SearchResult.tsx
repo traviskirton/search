@@ -1,7 +1,8 @@
 import { DotsThreeVerticalIcon, UserCircleIcon } from '@phosphor-icons/react'
-import { ActionIcon, Box, Group, Stack, Text, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Group, Stack, Text, UnstyledButton, useMantineTheme } from '@mantine/core'
 import { Menu, MenuItem } from '../Menu'
 import { TypeIcon } from '../TypeIcon'
+import classes from './SearchResult.module.css'
 
 export interface SearchResultProps {
   title: string
@@ -32,7 +33,16 @@ export function SearchResult({
   ]
 
   return (
-    <Box bg="white" p="lg" pb="xs" bdrs="sm">
+    <UnstyledButton
+      className={classes.result}
+      bg="white"
+      pt="sm"
+      pb="md"
+      px="md"
+      bd="1px solid gray.3"
+      bdrs="md"
+      w="100%"
+    >
       <Stack gap="xs">
         {/* Title Row */}
         <Group justify="space-between" align="center" gap="xxxs">
@@ -91,6 +101,6 @@ export function SearchResult({
           </Group>
         )}
       </Stack>
-    </Box>
+    </UnstyledButton>
   )
 }
