@@ -9,7 +9,7 @@ import {
   CaretDownIcon,
   CaretUpIcon,
 } from '@phosphor-icons/react'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { Menu } from '../Menu'
 import classes from './SearchInterface.module.css'
 import { TAG_TAXONOMY, tagToLabel } from '../../tag-taxonomy'
@@ -49,6 +49,8 @@ export function SearchInterface({
   const [optionHeld, setOptionHeld] = useState(false)
   const [filterButtonHovered, setFilterButtonHovered] = useState(false)
   const [sortMenuOpen, setSortMenuOpen] = useState(false)
+  const chipsViewport = useRef<HTMLDivElement>(null)
+  const [chipsFade, setChipsFade] = useState({ left: false, right: false })
 
   // Track option/alt key state and keyboard shortcuts
   useEffect(() => {
@@ -168,6 +170,21 @@ export function SearchInterface({
     onSortDirectionChange(sortDirection === 'asc' ? 'desc' : 'asc')
   }, [sortDirection, onSortDirectionChange])
 
+  // Fade the chip ribbon's edges only where there is more to scroll to
+  const updateChipsFade = useCallback(() => {
+    const el = chipsViewport.current
+    if (!el) return
+    const left = el.scrollLeft > 1
+    const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 1
+    setChipsFade((prev) => (prev.left === left && prev.right === right ? prev : { left, right }))
+  }, [])
+
+  useEffect(() => {
+    updateChipsFade()
+    window.addEventListener('resize', updateChipsFade)
+    return () => window.removeEventListener('resize', updateChipsFade)
+  }, [filters, updateChipsFade])
+
   // Funnel key: neutral with no filters, accent with filters, red when Option-click would clear them
   const willClear = optionHeld && filterButtonHovered && filters.length > 0
   const filterButtonVariant = willClear ? 'danger' : filters.length > 0 ? 'accent' : 'key'
@@ -201,7 +218,16 @@ export function SearchInterface({
         </ActionIcon>
 
         {/* Selected tag ribbon */}
-        <ScrollArea className={classes.chips} scrollbarSize={0} offsetScrollbars>
+        <ScrollArea
+          className={classes.chips}
+          classNames={{ viewport: classes.chipsViewport }}
+          scrollbarSize={0}
+          offsetScrollbars
+          viewportRef={chipsViewport}
+          onScrollPositionChange={updateChipsFade}
+          data-fade-left={chipsFade.left || undefined}
+          data-fade-right={chipsFade.right || undefined}
+        >
           <div className={classes.chipRow}>
             {filters.map((filter) => (
               <FilterChip
@@ -297,7 +323,8 @@ function modifierToState(modifier: FilterModifier): FilterState {
 
 function StateIcon({ state, size }: { state: FilterState; size: number }) {
   if (state === 'include') return <PlusIcon size={size} className={classes.stateIcon} data-state={state} />
-  if (state === 'exclude') return <ExclamationMarkIcon size={size} className={classes.stateIcon} data-state={state} />
+  // The "!" reads thinner than the "+", so it gets 1px more
+  if (state === 'exclude') return <ExclamationMarkIcon size={size + 1} className={classes.stateIcon} data-state={state} />
   return null
 }
 

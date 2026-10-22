@@ -29,6 +29,22 @@
 .chips {
   flex: 1;
   min-width: 0;
+  margin-left: 8px; /* 8px past the ribbon gap, so chips never butt against the funnel */
+  --fade-left: 0px;
+  --fade-right: 0px;
+}
+
+.chips[data-fade-left] {
+  --fade-left: 16px;
+}
+
+.chips[data-fade-right] {
+  --fade-right: 16px;
+}
+
+.chipsViewport {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade-left), #000 calc(100% - var(--fade-right)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--fade-left), #000 calc(100% - var(--fade-right)), transparent);
 }
 
 .chipRow {

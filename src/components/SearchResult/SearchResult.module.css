@@ -56,7 +56,7 @@
 }
 
 .description {
-  font: 400 13.5px/18px var(--mantine-font-family);
+  font: 400 13px/17px var(--mantine-font-family);
   color: var(--sc-ink-2);
   display: -webkit-box;
   -webkit-line-clamp: 5;
@@ -65,7 +65,7 @@
 }
 
 .dataLine {
-  margin-top: auto;
+  margin-top: auto; /* the card's 6px flex gap is the minimum space above it */
   display: flex;
   align-items: center;
   justify-content: space-between;

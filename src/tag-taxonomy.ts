@@ -4,11 +4,24 @@
  * Defines a 2-level parent > child hierarchy for tags.
  */
 
+/** Labels that title-casing can't produce (acronyms, hyphenated words) */
+const TAG_LABELS: Record<string, string> = {
+  'sci-fi': 'Sci-Fi',
+  'post-war': 'Post-War',
+  'dc-universe': 'DC Universe',
+  'mi6': 'MI6',
+}
+
+/** Words kept lowercase unless they start the label */
+const SMALL_WORDS = new Set(['a', 'an', 'and', 'at', 'for', 'in', 'of', 'on', 'or', 'the', 'to'])
+
 /** Convert kebab-case tag to plain language */
 export function tagToLabel(tag: string): string {
+  if (TAG_LABELS[tag]) return TAG_LABELS[tag]
+
   return tag
     .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word, i) => (i > 0 && SMALL_WORDS.has(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)))
     .join(' ')
 }
 
