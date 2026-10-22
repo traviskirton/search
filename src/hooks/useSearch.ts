@@ -212,7 +212,7 @@ export function useSearch(): UseSearchResult {
         boost: { name: 10, aliases: 5, related: 3, tags: 2, description: 1 },
       })
 
-      searchResults = miniSearchResults.slice(0, 100).map((r) => {
+      searchResults = miniSearchResults.map((r) => {
         const result = r as unknown as {
           type: string
           name: string
@@ -273,7 +273,7 @@ export function useSearch(): UseSearchResult {
         break
     }
 
-    setResults(searchResults.slice(0, 40))
+    setResults(searchResults)
   }, [search, filters, index, allEntities, entityMatchesFilters, sortBy, sortDirection])
 
   return {
