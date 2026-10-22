@@ -41,3 +41,11 @@ Category-based filter UI with tag selection, ribbon showing active filters with 
 **Links, CORS & Cleanup**
 
 Added links, CORS support, and general code cleanup.
+
+---
+
+## v6-pre-rebrand
+
+**Pre-Rebrand Baseline**
+
+Last state on the original Mantine/Satoshi look before the Control Surface (Slate) restyle. Includes the unwired ChatPanel/useChat WIP and the design handoff in `handoffs/`.
