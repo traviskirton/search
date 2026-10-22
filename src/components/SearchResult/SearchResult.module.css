@@ -155,3 +155,15 @@
   align-items: center;
   justify-content: center;
 }
+
+/* The card is a button, but its title and description stay copyable */
+.result.result {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.dots,
+.link {
+  -webkit-user-select: none;
+  user-select: none;
+}

@@ -9,3 +9,12 @@ body {
   background: var(--sc-bg);
   color: var(--sc-ink);
 }
+
+/* UI controls aren't text: no selection highlight on click/drag */
+button,
+[role='button'],
+[role='menuitem'],
+[role='tab'] {
+  -webkit-user-select: none;
+  user-select: none;
+}
