@@ -20,8 +20,8 @@ function App() {
   } = useSearch()
 
   return (
-    <Box p={theme.spacing.xxxl} w="100%">
-      <Title mb="lg">{__APP_NAME__}</Title>
+    <Box p={theme.spacing.xl} w="100%">
+      {/* <Title mb="lg">{__APP_NAME__}</Title> */}
       <SearchInterface
         value={search}
         onChange={setSearch}

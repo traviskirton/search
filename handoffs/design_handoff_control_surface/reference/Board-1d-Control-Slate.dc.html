@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;500;600;700;800&family=Chivo+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>body{margin:0;background:#cdc7bc}a{color:#2f6fd6}a:hover{color:#1d1b18}</style>
+</helmet>
+<div style="padding:40px; background:var(--mat, #cdc7bc); display:flex; flex-direction:column; gap:24px; width:max-content; flex:none; box-sizing:border-box; font-family:'Chivo', sans-serif; color:#1d1b18">
+  <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex; align-items:flex-end; gap:28px">
+    <div style="display:flex; flex-direction:column; gap:8px">
+      <div style="display:flex; align-items:center; gap:8px; font:500 11px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:#5e584f"><span style="width:8px; height:8px; border-radius:50%; background:#ffd45c; box-shadow:0 0 8px #ffd45c"></span>Direction 1d</div>
+      <div style="font:800 46px/1 'Chivo', sans-serif; letter-spacing:-.03em">Control Surface</div>
+    </div>
+    <div style="font:400 16px/1.45 'Chivo', sans-serif; color:#3d3934; max-width:620px; padding-bottom:2px; text-wrap:pretty">Warm and tactile, like a piece of studio hardware. Filters are keycaps that latch down, a tint and icon show their state, and categories with live filters light up, so the whole query is readable at a glance.</div>
+    <div style="display:flex; flex-direction:column; gap:5px; padding-bottom:3px; font:500 11.5px/1.3 'Chivo Mono', monospace; letter-spacing:.06em; text-transform:uppercase; color:#3d3934">
+      <span>· Raised = off, latched = on</span>
+      <span>· Tint + icon = OR / + / !</span>
+      <span>· Depth instead of borders</span>
+    </div>
+  </div>
+  </sc-if>
+  <div style="display:flex; gap:32px; align-items:flex-start">
+    <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+      <div style="{{ m.vars }}">
+        <div style="width:1120px; box-sizing:border-box; padding:22px 20px 28px; background:var(--bg); color:var(--ink); display:flex; flex-direction:column; gap:12px; border-radius:14px; font-family:'Chivo', sans-serif">
+          <div style="display:flex; justify-content:space-between; font:500 11px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap"><span>{{ m.label }} mode</span><span>Search · 1d Control Surface</span></div>
+
+          <div style="display:flex; align-items:center; gap:10px; font:500 10.5px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap; margin-top:6px"><span>01 Search panel</span><span style="flex:1; height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></span></div>
+          <div style="background:var(--surface); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:12px; box-shadow:var(--cardShadow)">
+            <div style="height:54px; box-sizing:border-box; display:flex; align-items:center; padding:0 16px; background:var(--well); border-radius:10px; box-shadow:var(--wellShadow); font:500 24px/1 'Chivo', sans-serif; color:var(--ink)">the<span style="width:2px; height:26px; background:var(--ink); margin-left:2px"></span></div>
+            <div style="display:flex; align-items:center; gap:10px">
+              <div style="width:34px; height:34px; flex:none; display:flex; align-items:center; justify-content:center; background:var(--accent); color:var(--onAccent); border-radius:8px; font-size:16px; box-shadow:var(--accentKey)"><i class="ph-bold ph-funnel"></i></div>
+              <div style="flex:1; min-width:0; display:flex; gap:8px; overflow:hidden; padding:4px 2px 6px; font:600 13px/1 'Chivo', sans-serif">
+                <div style="display:flex; flex:none; height:30px; background:var(--defFace); border-radius:8px; box-shadow:var(--defPressed); transform:translateY(1px)">
+                  <span style="padding:0 9px 0 10px; display:flex; align-items:center; gap:7px">Book</span>
+                  <span style="padding:0 8px; display:flex; align-items:center; font-size:11px; color:var(--muted); border-left:1px solid var(--line)"><i class="ph-bold ph-x"></i></span>
+                </div>
+                <div style="display:flex; flex:none; height:30px; background:var(--incFace); border-radius:8px; box-shadow:var(--incPressed); transform:translateY(1px)">
+                  <span style="padding:0 9px 0 10px; display:flex; align-items:center; gap:7px"><i class="ph-bold ph-plus" style="font-size:11px; color:var(--incInk)"></i>Movie</span>
+                  <span style="padding:0 8px; display:flex; align-items:center; font-size:11px; color:var(--muted); border-left:1px solid var(--line)"><i class="ph-bold ph-x"></i></span>
+                </div>
+                <div style="display:flex; flex:none; height:30px; background:var(--excFace); border-radius:8px; box-shadow:var(--excPressed); transform:translateY(1px)">
+                  <span style="padding:0 9px 0 10px; display:flex; align-items:center; gap:7px"><i class="ph-bold ph-exclamation-mark" style="font-size:11px; color:var(--excInk)"></i>Fantasy</span>
+                  <span style="padding:0 8px; display:flex; align-items:center; font-size:11px; color:var(--muted); border-left:1px solid var(--line)"><i class="ph-bold ph-x"></i></span>
+                </div>
+              </div>
+              <div style="display:flex; flex:none; height:32px; background:var(--surface); border-radius:8px; box-shadow:var(--keyShadow); font:500 12px/1 'Chivo Mono', monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--ink)">
+                <span style="padding:0 11px; display:flex; gap:8px; align-items:center">Relevance<i class="ph-bold ph-caret-down" style="font-size:10px; color:var(--muted)"></i></span>
+                <span style="padding:0 10px; border-left:1px solid var(--line); display:flex; align-items:center; font-size:13px"><i class="ph-bold ph-arrow-up"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px; font:500 10.5px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap; margin-top:6px"><span>02 Filter panel · Genre</span><span style="flex:1; height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></span><span>Expands inside the search panel</span></div>
+          <div style="background:var(--surface); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:12px; box-shadow:var(--cardShadow)">
+            <div style="display:flex; align-self:flex-start; gap:4px; padding:0 0 1px; font:500 12px/1 'Chivo Mono', monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)">
+              <span style="padding:9px 12px; display:flex; align-items:center; gap:7px; color:var(--ink); background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)"><span style="width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent)"></span>Type</span>
+              <span style="padding:9px 12px; display:flex; align-items:center; gap:7px; color:var(--ink); background:var(--latched); border-radius:7px; box-shadow:var(--keyPressed); transform:translateY(1px)"><span style="width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent)"></span>Genre</span>
+              <span style="padding:9px 12px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Era</span>
+              <span style="padding:9px 12px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Tone</span>
+              <span style="padding:9px 12px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Theme</span>
+              <span style="padding:9px 12px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Franchise</span>
+              <span style="padding:9px 12px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Role</span>
+              <span style="padding:9px 12px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Trait</span>
+            </div>
+            <div style="height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px 7px; padding-bottom:2px; font:500 13px/1 'Chivo', sans-serif; color:var(--ink2)">
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Action</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Adventure</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Comedy</span>
+              <span style="padding:8px 10px; background:var(--defFace); border-radius:7px; box-shadow:var(--defPressed); transform:translateY(1px); display:flex; gap:6px; align-items:center; color:var(--ink); font-weight:600">Crime</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Drama</span>
+              <span style="padding:8px 10px; background:var(--excFace); border-radius:7px; box-shadow:var(--excPressed); transform:translateY(1px); display:flex; gap:6px; align-items:center; color:var(--ink); font-weight:600"><i class="ph-bold ph-exclamation-mark" style="font-size:10px; color:var(--excInk)"></i>Fantasy</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Horror</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Mystery</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Romance</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Sci-Fi</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Thriller</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Western</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Noir</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Espionage</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Cyberpunk</span>
+              <span style="padding:8px 10px; background:var(--incFace); border-radius:7px; box-shadow:var(--incPressed); transform:translateY(1px); display:flex; gap:6px; align-items:center; color:var(--ink); font-weight:600"><i class="ph-bold ph-plus" style="font-size:10px; color:var(--incInk)"></i>Heist</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">Satire</span>
+              <span style="padding:8px 10px; background:var(--surface); border-radius:7px; box-shadow:var(--keyShadowSm)">War</span>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px; font:500 10.5px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap; margin-top:6px"><span>03 Results · 04 card menu</span><span style="flex:1; height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></span><span>Middle card hovered · right card menu open</span></div>
+          <div style="display:grid; grid-template-columns:repeat(3, 352px); grid-auto-rows:200px; gap:12px">
+            <div style="position:relative; box-sizing:border-box; height:200px; background:var(--surface); border-radius:12px; padding:12px 14px; display:flex; flex-direction:column; gap:6px; box-shadow:var(--cardShadow)">
+              <div style="display:flex; align-items:center; gap:6px">
+                <div style="flex:1; min-width:0; font:700 18px/1.25 'Chivo', sans-serif; letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">The Hobbit</div>
+                <div style="width:24px; height:24px; margin-right:-4px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:15px; border-radius:6px"><i class="ph-bold ph-dots-three-vertical"></i></div>
+              </div>
+              <div style="font:400 13.5px/18px 'Chivo', sans-serif; color:var(--ink2); display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden">J.R.R. Tolkien's 1937 novel for children. Bilbo Baggins, a comfort-loving hobbit, is swept into a quest with thirteen dwarves and the wizard Gandalf to win back the Lonely Mountain from the dragon Smaug.</div>
+              <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between">
+                <span style="font:500 10px/1 'Chivo Mono', monospace; letter-spacing:.1em; text-transform:uppercase; padding:4px 6px; background:var(--well); border-radius:4px; box-shadow:var(--wellShadowSm); color:var(--ink2)">Fantasy</span>
+                <i class="ph-bold ph-link" style="font-size:14px; color:var(--muted)"></i>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; white-space:nowrap">
+                <span style="display:flex; align-items:center; gap:7px; font:500 11px/1 'Chivo Mono', monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink)"><span style="width:22px; height:22px; display:flex; align-items:center; justify-content:center; background:var(--well); border-radius:6px; box-shadow:var(--wellShadowSm); font-size:13px"><i class="ph-bold ph-book"></i></span>Book</span>
+                <span style="display:flex; align-items:center; gap:5px; font:400 11px/1 'Chivo', sans-serif; color:var(--muted)">Updated by <span style="width:15px; height:15px; border-radius:50%; background:var(--accent); color:var(--onAccent); font-size:7px; font-weight:700; display:flex; align-items:center; justify-content:center">AR</span><span style="color:var(--ink2)">Ana Ruiz, Oct 12</span></span>
+              </div>
+            </div>
+            <div style="position:relative; box-sizing:border-box; height:200px; background:var(--surface); border-radius:12px; padding:12px 14px; display:flex; flex-direction:column; gap:6px; box-shadow:var(--cardHover); transform:translateY(-3px)">
+              <div style="display:flex; align-items:center; gap:6px">
+                <div style="flex:1; min-width:0; font:700 18px/1.25 'Chivo', sans-serif; letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">The Godfather Part II</div>
+                <div style="width:24px; height:24px; margin-right:-4px; display:flex; align-items:center; justify-content:center; color:var(--ink); font-size:15px; border-radius:6px"><i class="ph-bold ph-dots-three-vertical"></i></div>
+              </div>
+              <div style="font:400 13.5px/18px 'Chivo', sans-serif; color:var(--ink2); display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden">Francis Ford Coppola's 1974 sequel intercuts two stories: Michael Corleone consolidating power as the new Don, from Lake Tahoe to Havana, and the young Vito Corleone's rise from Sicilian orphan to the most feared man in 1910s Little Italy. It won six Academy Awards, including Best Picture.</div>
+              <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between">
+                <span style="font:500 10px/1 'Chivo Mono', monospace; letter-spacing:.1em; text-transform:uppercase; padding:4px 6px; background:var(--well); border-radius:4px; box-shadow:var(--wellShadowSm); color:var(--ink2)">Crime</span>
+                <i class="ph-bold ph-link" style="font-size:14px; color:var(--ink)"></i>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between">
+                <span style="display:flex; align-items:center; gap:7px; font:500 11px/1 'Chivo Mono', monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink)"><span style="width:22px; height:22px; display:flex; align-items:center; justify-content:center; background:var(--well); border-radius:6px; box-shadow:var(--wellShadowSm); font-size:13px"><i class="ph-bold ph-film-slate"></i></span>Movie</span>
+              </div>
+            </div>
+            <div style="position:relative; box-sizing:border-box; height:200px; background:var(--surface); border-radius:12px; padding:12px 14px; display:flex; flex-direction:column; gap:6px; box-shadow:var(--cardShadow)">
+              <div style="display:flex; align-items:center; gap:6px">
+                <div style="flex:1; min-width:0; font:700 18px/1.25 'Chivo', sans-serif; letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">221B Baker Street</div>
+                <div style="width:24px; height:24px; margin-right:-4px; display:flex; align-items:center; justify-content:center; color:var(--ink); background:var(--latched); box-shadow:var(--keyPressed); font-size:15px; border-radius:6px"><i class="ph-bold ph-dots-three-vertical"></i></div>
+              </div>
+              <div style="font:400 13.5px/18px 'Chivo', sans-serif; color:var(--ink2); display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden">The London lodgings of Sherlock Holmes and Dr. Watson, kept by Mrs. Hudson.</div>
+              <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between">
+                <span style="font:500 10px/1 'Chivo Mono', monospace; letter-spacing:.1em; text-transform:uppercase; padding:4px 6px; background:var(--well); border-radius:4px; box-shadow:var(--wellShadowSm); color:var(--ink2)">Victorian</span>
+                <i class="ph-bold ph-link" style="font-size:14px; color:var(--muted)"></i>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between">
+                <span style="display:flex; align-items:center; gap:7px; font:500 11px/1 'Chivo Mono', monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink)"><span style="width:22px; height:22px; display:flex; align-items:center; justify-content:center; background:var(--well); border-radius:6px; box-shadow:var(--wellShadowSm); font-size:13px"><i class="ph-bold ph-map-pin"></i></span>Location</span>
+              </div>
+              <div style="position:absolute; top:42px; right:10px; z-index:2; width:172px; box-sizing:border-box; background:var(--surface); border-radius:10px; box-shadow:var(--menuShadow); padding:5px; font:500 14px/1 'Chivo', sans-serif; color:var(--ink)">
+                <div style="padding:10px 11px; background:var(--well); box-shadow:var(--wellShadowSm); border-radius:7px">Open</div>
+                <div style="padding:10px 11px">Ask</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:200px minmax(0,1fr) 380px; gap:24px; margin-top:6px">
+            <div style="display:flex; flex-direction:column; gap:10px">
+              <div style="display:flex; align-items:center; gap:10px; font:500 10.5px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap"><span>04 Sort menu</span><span style="flex:1; height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></span></div>
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px">
+                <div style="display:flex; height:32px; background:var(--latched); border-radius:8px; box-shadow:var(--keyPressed); font:500 12px/1 'Chivo Mono', monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--ink)">
+                  <span style="padding:0 11px; display:flex; gap:8px; align-items:center">Relevance<i class="ph-bold ph-caret-up" style="font-size:10px; color:var(--muted)"></i></span>
+                  <span style="padding:0 10px; border-left:1px solid var(--line); display:flex; align-items:center; font-size:13px"><i class="ph-bold ph-arrow-up"></i></span>
+                </div>
+                <div style="width:200px; box-sizing:border-box; background:var(--surface); border-radius:10px; box-shadow:var(--menuShadow); padding:5px; font:500 14px/1 'Chivo', sans-serif; color:var(--ink)">
+                  <div style="padding:10px 11px; display:flex; justify-content:space-between; align-items:center">Relevance<i class="ph-bold ph-check" style="font-size:13px"></i></div>
+                  <div style="padding:10px 11px; background:var(--well); box-shadow:var(--wellShadowSm); border-radius:7px">Alphabetical</div>
+                  <div style="padding:10px 11px">Type</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px">
+              <div style="display:flex; align-items:center; gap:10px; font:500 10.5px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap"><span>05 Type icons · Phosphor Bold</span><span style="flex:1; height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></span></div>
+              <div style="display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:14px 8px; padding-top:6px">
+                <sc-for list="{{ types }}" as="t" hint-placeholder-count="10">
+                  <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
+                    <span style="width:46px; height:46px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:var(--surface); box-shadow:var(--keyShadow); color:var(--ink); font-size:21px"><i class="ph-bold ph-{{ t.icon }}"></i></span>
+                    <span style="font:500 10px/1 'Chivo Mono', monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink2)">{{ t.name }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px">
+              <div style="display:flex; align-items:center; gap:10px; font:500 10.5px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap"><span>06 Chat panel · 380</span><span style="flex:1; height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></span></div>
+              <div style="height:340px; box-sizing:border-box; background:var(--surface); border-radius:12px; box-shadow:var(--cardShadow); display:flex; flex-direction:column; overflow:hidden">
+                <div style="padding:12px 14px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line)">
+                  <span style="font:700 16px/1 'Chivo', sans-serif">Chat</span>
+                  <span style="display:flex; align-items:center; gap:7px; font:500 10px/1 'Chivo Mono', monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)">Ready</span>
+                </div>
+                <div style="flex:1; padding:14px; display:flex; flex-direction:column; gap:14px; overflow:hidden">
+                  <div style="flex:none; align-self:flex-end; max-width:78%; background:var(--ink); color:var(--bg); border-radius:12px 12px 4px 12px; padding:9px 12px; font:500 14px/1.4 'Chivo', sans-serif">Show me crime movies, no fantasy</div>
+                  <div style="flex:none; align-self:flex-start; max-width:90%; background:var(--well); box-shadow:var(--wellShadowSm); border-radius:4px 12px 12px 12px; padding:11px 13px; display:flex; flex-direction:column; gap:10px">
+                    <span style="font:400 14px/1.45 'Chivo', sans-serif; color:var(--ink2); text-wrap:pretty">I filtered to movies tagged Crime and excluded Fantasy. The Godfather Part II is the top match.</span>
+                    <div style="display:flex; gap:6px; font:600 12px/1 'Chivo', sans-serif; color:var(--ink)">
+                      <span style="padding:5px 8px; background:var(--incFace); border-radius:6px; box-shadow:var(--incPressed); display:flex; gap:5px; align-items:center">+ Movie</span>
+                      <span style="padding:5px 8px; background:var(--defFace); border-radius:6px; box-shadow:var(--defPressed); display:flex; gap:5px; align-items:center">Crime</span>
+                      <span style="padding:5px 8px; background:var(--excFace); border-radius:6px; box-shadow:var(--excPressed); display:flex; gap:5px; align-items:center">! Fantasy</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding:10px; display:flex; gap:8px; align-items:center">
+                  <div style="flex:1; height:40px; box-sizing:border-box; display:flex; align-items:center; padding:0 12px; background:var(--well); border-radius:9px; box-shadow:var(--wellShadow); font:400 14px/1 'Chivo', sans-serif; color:var(--muted)">Ask or search in plain language…</div>
+                  <div style="width:40px; height:40px; flex:none; display:flex; align-items:center; justify-content:center; background:var(--accent); color:var(--onAccent); border-radius:9px; box-shadow:var(--accentKey); font-size:16px"><i class="ph-bold ph-paper-plane-right"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px; font:500 10.5px/1 'Chivo Mono', monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); white-space:nowrap; margin-top:8px"><span>07 Tokens</span><span style="flex:1; height:1px; background:var(--line); box-shadow:0 1px 0 var(--hi)"></span></div>
+          <div style="display:grid; grid-template-columns:440px minmax(0,1fr) 300px; gap:24px">
+            <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; font:500 10px/1.3 'Chivo Mono', monospace; letter-spacing:.04em; text-transform:uppercase">
+              <div style="display:flex; flex-direction:column; gap:6px"><div style="height:42px; background:var(--accent); border-radius:8px; box-shadow:var(--accentKey)"></div><span style="color:var(--ink)">Signal</span><span style="color:var(--muted)">{{ m.c.accent }}</span></div>
+              <div style="display:flex; flex-direction:column; gap:6px"><div style="height:42px; background:var(--defFace); border-radius:8px; box-shadow:var(--defPressed); display:flex; align-items:center; justify-content:center"></div><span style="color:var(--ink)">OR · grey</span><span style="color:var(--muted)">{{ m.c.def }}</span></div>
+              <div style="display:flex; flex-direction:column; gap:6px"><div style="height:42px; background:var(--incFace); border-radius:8px; box-shadow:var(--incPressed); display:flex; align-items:center; justify-content:center; gap:6px; color:var(--incInk)"><i class="ph-bold ph-plus" style="font-size:13px"></i></div><span style="color:var(--ink)">+ · tint + icon</span><span style="color:var(--muted)">{{ m.c.inc }}</span></div>
+              <div style="display:flex; flex-direction:column; gap:6px"><div style="height:42px; background:var(--excFace); border-radius:8px; box-shadow:var(--excPressed); display:flex; align-items:center; justify-content:center; gap:6px; color:var(--excInk)"><i class="ph-bold ph-exclamation-mark" style="font-size:13px"></i></div><span style="color:var(--ink)">! · tint + icon</span><span style="color:var(--muted)">{{ m.c.exc }}</span></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px">
+              <div style="display:flex; align-items:baseline; gap:12px"><span style="font:800 30px/1 'Chivo', sans-serif; letter-spacing:-.03em">Chivo</span><span style="font:400 12px/1.3 'Chivo', sans-serif; color:var(--muted)">Titles 18/700 · body 13.5/18 · input 24</span></div>
+              <div style="display:flex; align-items:baseline; gap:12px"><span style="font:500 20px/1 'Chivo Mono', monospace">Chivo Mono</span><span style="font:400 12px/1.3 'Chivo', sans-serif; color:var(--muted)">Silkscreen labels · tabs · sort · 10–12 caps</span></div>
+              <div style="font:400 11.5px/1.5 'Chivo', sans-serif; color:var(--muted)">Chassis {{ m.c.bg }} · key {{ m.c.surface }} · well {{ m.c.well }} · ink {{ m.c.ink }}<br>Mantine: radius md 8 / lg 12 · shadows xs–xl as key/latched/well stacks · Button variants 'key', 'latched'</div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; font:500 10px/1.3 'Chivo Mono', monospace; letter-spacing:.04em; text-transform:uppercase; color:var(--muted)">
+              <div style="display:flex; flex-direction:column; gap:7px"><div style="height:42px; background:var(--surface); border-radius:8px; box-shadow:var(--keyShadow)"></div><span style="color:var(--ink)">Raised = off</span><span>Idle keys, unselected tags</span></div>
+              <div style="display:flex; flex-direction:column; gap:7px"><div style="height:42px; background:var(--latched); border-radius:8px; box-shadow:var(--keyPressed)"></div><span style="color:var(--ink)">Latched = on</span><span>Selected filters, open menus</span></div>
+              <div style="display:flex; flex-direction:column; gap:7px"><div style="height:42px; background:var(--well); border-radius:8px; box-shadow:var(--wellShadow)"></div><span style="color:var(--ink)">Well</span><span>Inputs, badges</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;both&quot;,&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;both&quot;,&quot;tsType&quot;:&quot;'both' | 'light' | 'dark'&quot;,&quot;section&quot;:&quot;Board&quot;},&quot;palette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;sand&quot;,&quot;bone&quot;,&quot;concrete&quot;,&quot;sage&quot;,&quot;slate&quot;,&quot;clay&quot;],&quot;default&quot;:&quot;sand&quot;,&quot;tsType&quot;:&quot;'sand' | 'bone' | 'concrete' | 'sage' | 'slate' | 'clay'&quot;,&quot;section&quot;:&quot;Board&quot;},&quot;header&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Board&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const P = {
+      light: {
+        bg: '#e3ded4', surface: '#f5f2ec', latched: '#e9e4da', well: '#dcd6cb', ink: '#1d1b18', ink2: '#3d3934', muted: '#69635a', line: '#d2cbbf', hi: 'rgba(255,255,255,.7)',
+        accent: '#ffd45c', onAccent: '#1d1b18',
+        def: '#d6d3cf', inc: '#23a052', exc: '#d9382a', incInk: '#1b7a3e', excInk: '#b3291d',
+        keyShadow: 'inset 0 1px 0 rgba(255,255,255,.9), 0 1px 0 #c3bbad, 0 2px 3px -1px rgba(60,45,25,.18)',
+        keyShadowSm: 'inset 0 1px 0 rgba(255,255,255,.9), 0 1px 0 #cdc6b9, 0 1px 2px rgba(60,45,25,.12)',
+        keyPressed: 'inset 0 1px 2px rgba(60,45,25,.2), inset 0 0 0 1px rgba(60,45,25,.07), 0 1px 0 rgba(255,255,255,.75)',
+        incFace: '#d3ecd9', excFace: '#f6d6d0',
+        incPressed: 'inset 0 1px 2px rgba(20,90,45,.22), inset 0 0 0 1px rgba(35,160,82,.4), 0 1px 0 rgba(255,255,255,.75)',
+        excPressed: 'inset 0 1px 2px rgba(130,30,20,.2), inset 0 0 0 1px rgba(217,56,42,.4), 0 1px 0 rgba(255,255,255,.75)',
+        defFace: '#d6d3cf', defPressed: 'inset 0 1px 2px rgba(40,38,36,.18), inset 0 0 0 1px rgba(40,38,36,.11), 0 1px 0 rgba(255,255,255,.75)',
+        accentKey: 'inset 0 1px 0 rgba(255,255,255,.7), 0 1px 0 #e3b53a, 0 2px 3px -1px rgba(90,60,0,.18)',
+        wellShadow: 'inset 0 2px 4px rgba(60,45,25,.2), inset 0 0 0 1px rgba(60,45,25,.06), 0 1px 0 rgba(255,255,255,.8)',
+        wellShadowSm: 'inset 0 1px 2px rgba(60,45,25,.18), 0 1px 0 rgba(255,255,255,.8)',
+        cardShadow: 'inset 0 1px 0 rgba(255,255,255,.95), 0 1px 0 #c6beb0, 0 3px 6px -2px rgba(60,45,25,.22)',
+        cardHover: 'inset 0 1px 0 rgba(255,255,255,.95), 0 1px 0 #c6beb0, 0 18px 30px -12px rgba(60,45,25,.42)',
+        menuShadow: '0 20px 40px -12px rgba(60,45,25,.45), 0 1px 0 #c6beb0, inset 0 1px 0 rgba(255,255,255,.95)'
+      },
+      dark: {
+        bg: '#1b1a18', surface: '#2b2926', latched: '#232120', well: '#151413', ink: '#ede8df', ink2: '#cdc7bc', muted: '#9c958b', line: '#3a3732', hi: 'rgba(255,255,255,.03)',
+        accent: '#f7cb4d', onAccent: '#1b1a18',
+        def: '#34322f', inc: '#5fd987', exc: '#ff6b5d', incInk: '#7fe3a0', excInk: '#ff8a7e',
+        keyShadow: 'inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 #0f0e0d, 0 2px 4px -1px rgba(0,0,0,.45)',
+        keyShadowSm: 'inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 #0f0e0d, 0 1px 2px rgba(0,0,0,.35)',
+        keyPressed: 'inset 0 1px 3px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.05)',
+        incFace: '#1d3b29', excFace: '#432420',
+        incPressed: 'inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(95,217,135,.38), 0 1px 0 rgba(255,255,255,.04)',
+        excPressed: 'inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,107,93,.38), 0 1px 0 rgba(255,255,255,.04)',
+        defFace: '#34322f', defPressed: 'inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.07), 0 1px 0 rgba(255,255,255,.04)',
+        accentKey: 'inset 0 1px 0 rgba(255,255,255,.5), 0 1px 0 #b89025, 0 2px 4px -1px rgba(0,0,0,.45)',
+        wellShadow: 'inset 0 2px 5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05)',
+        wellShadowSm: 'inset 0 1px 3px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.04)',
+        cardShadow: 'inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 #0e0d0c, 0 4px 8px -3px rgba(0,0,0,.65)',
+        cardHover: 'inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 #0e0d0c, 0 20px 34px -12px rgba(0,0,0,.85)',
+        menuShadow: '0 22px 44px -10px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08)'
+      }
+    };
+    const L = (bg, surface, latched, well, ink, ink2, muted, line, defFace, edge, edgeSm, cardEdge, sh) => ({ v: { bg, surface, latched, well, ink, ink2, muted, line, def: defFace, defFace, onAccent: ink }, map: [['#c3bbad', edge], ['#cdc6b9', edgeSm], ['#c6beb0', cardEdge], ['rgba(60,45,25,', 'rgba(' + sh + ','], ['rgba(40,38,36,', 'rgba(' + sh + ',']] });
+    const D = (bg, surface, latched, well, ink, ink2, muted, line, defFace, edge) => ({ v: { bg, surface, latched, well, ink, ink2, muted, line, def: defFace, defFace, onAccent: bg }, map: [['#0f0e0d', edge], ['#0e0d0c', edge]] });
+    const PAL = {
+      bone: { light: L('#eeebe5', '#fbfaf7', '#f1eee8', '#e6e2da', '#22201c', '#44403a', '#6e695f', '#dedad2', '#e2dfd9', '#d3cec4', '#dcd8cf', '#d6d1c7', '60,45,25'), dark: D('#201f1d', '#302e2b', '#282624', '#1a1918', '#f1ede6', '#d3cdc3', '#a29b90', '#403d38', '#3a3834', '#141312') },
+      concrete: { light: L('#dcdcdb', '#f3f3f2', '#e7e7e6', '#d3d3d2', '#1a1a1a', '#3b3b3b', '#666666', '#cfcfce', '#d4d4d3', '#bdbdbc', '#c8c8c7', '#c2c2c1', '30,30,30'), dark: D('#18191a', '#27282a', '#202123', '#131415', '#ececec', '#c9c9c9', '#969696', '#36383a', '#323335', '#0c0d0e') },
+      sage: { light: L('#d8ddd4', '#f0f2ec', '#e3e7de', '#ced4c9', '#1a1f19', '#3a4237', '#626b5e', '#cbd1c5', '#d3d8ce', '#b6bdb0', '#c3c9bd', '#b9c0b3', '30,45,25'), dark: D('#171a16', '#252a23', '#1e221c', '#121411', '#e8ede4', '#c6cdc1', '#959e8f', '#343a31', '#30352d', '#0b0d0a') },
+      slate: { light: L('#d7dbe1', '#f0f2f5', '#e3e6eb', '#ccd1d8', '#161a20', '#363d47', '#5f6773', '#c9ced6', '#d2d6dd', '#b5bcc6', '#c2c8d0', '#b8bfc9', '25,35,55'), dark: D('#14171c', '#222730', '#1b1f26', '#0f1115', '#e6eaf0', '#c3c9d3', '#8f98a6', '#313744', '#2d323b', '#090b0e') },
+      clay: { light: L('#e2d9d4', '#f6f1ee', '#ebe3de', '#d9cfc9', '#211b19', '#433935', '#6d615b', '#d6cbc5', '#dcd4cf', '#c7b9b1', '#d0c4bd', '#cabdb5', '70,40,30'), dark: D('#1d1817', '#2e2725', '#252020', '#171312', '#f0e8e4', '#d2c6c0', '#a1938c', '#3e3532', '#39312e', '#110d0c') }
+    };
+    Object.assign(PAL.slate.light.v, { accent: '#f7d84a', inc: '#0f9e7a', incInk: '#0a7a5e', incFace: '#cdebe3', exc: '#e2364c', excInk: '#b8233a', excFace: '#f7d2d9' });
+    PAL.slate.light.map.push(['rgba(20,90,45,', 'rgba(10,85,65,'], ['rgba(35,160,82,', 'rgba(15,158,122,'], ['rgba(130,30,20,', 'rgba(135,20,40,'], ['rgba(217,56,42,', 'rgba(226,54,76,'], ['#e3b53a', '#d6b928'], ['rgba(90,60,0,', 'rgba(70,60,10,']);
+    Object.assign(PAL.slate.dark.v, { accent: '#f5d84c', inc: '#3cd3a7', incInk: '#6fe2c0', incFace: '#163a33', exc: '#ff5a6f', excInk: '#ff8695', excFace: '#44202a' });
+    PAL.slate.dark.map.push(['rgba(95,217,135,', 'rgba(60,211,167,'], ['rgba(255,107,93,', 'rgba(255,90,111,'], ['#b89025', '#b09a24']);
+    const palette = this.props.palette ?? 'slate';
+    const mode = this.props.mode ?? 'both';
+    const keys = mode === 'both' ? ['light', 'dark'] : [mode];
+    const modes = keys.map(k => {
+      let c = { ...P[k] };
+      const p = PAL[palette] && PAL[palette][k];
+      if (p) {
+        for (const n in c) { let v = c[n]; for (const [a, b] of p.map) v = v.split(a).join(b); c[n] = v; }
+        Object.assign(c, p.v);
+      }
+      return { label: k === 'light' ? 'Light' : 'Dark', c, vars: Object.fromEntries(Object.entries(c).map(([n, v]) => ['--' + n, v])) };
+    });
+    const types = [
+      ['Person', 'person-simple-circle'], ['Character', 'finn-the-human'], ['Location', 'map-pin'], ['Item', 'package'], ['Organization', 'buildings'],
+      ['Book', 'book'], ['Movie', 'film-slate'], ['Vehicle', 'car'], ['Franchise', 'planet'], ['Company', 'building']
+    ].map(([name, icon]) => ({ name, icon }));
+    return { modes, types, showHeader: this.props.header ?? true };
+  }
+}
+</script>
+</body>
+</html>

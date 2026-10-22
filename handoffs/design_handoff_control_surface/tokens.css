@@ -1,0 +1,83 @@
+/* Search · Control Surface (Slate) — semantic tokens.
+   Import once (e.g. in main.tsx after @mantine/core/styles.css).
+   Mantine sets data-mantine-color-scheme on <html>. */
+
+:root,
+[data-mantine-color-scheme='light'] {
+  /* surfaces */
+  --sc-bg: #d7dbe1;          /* chassis / page */
+  --sc-surface: #f0f2f5;     /* raised key, card, panel, menu */
+  --sc-latched: #e3e6eb;     /* pushed-in neutral key */
+  --sc-well: #ccd1d8;        /* recessed: inputs, badges, icon tiles */
+  --sc-line: #c9ced6;
+  --sc-hi: rgba(255, 255, 255, 0.7);   /* 1px highlight under dividers */
+
+  /* ink */
+  --sc-ink: #161a20;
+  --sc-ink-2: #363d47;
+  --sc-muted: #5f6773;
+
+  /* signal (brand accent) */
+  --sc-accent: #f7d84a;
+  --sc-on-accent: #161a20;
+
+  /* filter states */
+  --sc-or-face: #d2d6dd;
+  --sc-inc: #0f9e7a;
+  --sc-inc-ink: #0a7a5e;
+  --sc-inc-face: #cdebe3;
+  --sc-exc: #e2364c;
+  --sc-exc-ink: #b8233a;
+  --sc-exc-face: #f7d2d9;
+
+  /* depth */
+  --sc-key: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 0 #b5bcc6, 0 2px 3px -1px rgba(25,35,55,.18);
+  --sc-key-sm: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 0 #c2c8d0, 0 1px 2px rgba(25,35,55,.12);
+  --sc-key-accent: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 0 #d6b928, 0 2px 3px -1px rgba(70,60,10,.18);
+  --sc-latched-shadow: inset 0 1px 2px rgba(25,35,55,.2), inset 0 0 0 1px rgba(25,35,55,.07), 0 1px 0 rgba(255,255,255,.75);
+  --sc-or-shadow: inset 0 1px 2px rgba(25,35,55,.18), inset 0 0 0 1px rgba(25,35,55,.11), 0 1px 0 rgba(255,255,255,.75);
+  --sc-inc-shadow: inset 0 1px 2px rgba(10,85,65,.22), inset 0 0 0 1px rgba(15,158,122,.4), 0 1px 0 rgba(255,255,255,.75);
+  --sc-exc-shadow: inset 0 1px 2px rgba(135,20,40,.2), inset 0 0 0 1px rgba(226,54,76,.4), 0 1px 0 rgba(255,255,255,.75);
+  --sc-well-shadow: inset 0 2px 4px rgba(25,35,55,.2), inset 0 0 0 1px rgba(25,35,55,.06), 0 1px 0 rgba(255,255,255,.8);
+  --sc-well-shadow-sm: inset 0 1px 2px rgba(25,35,55,.18), 0 1px 0 rgba(255,255,255,.8);
+  --sc-card: inset 0 1px 0 rgba(255,255,255,.95), 0 1px 0 #b8bfc9, 0 3px 6px -2px rgba(25,35,55,.22);
+  --sc-card-hover: inset 0 1px 0 rgba(255,255,255,.95), 0 1px 0 #b8bfc9, 0 18px 30px -12px rgba(25,35,55,.42);
+  --sc-menu: 0 20px 40px -12px rgba(25,35,55,.45), 0 1px 0 #b8bfc9, inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+[data-mantine-color-scheme='dark'] {
+  --sc-bg: #14171c;
+  --sc-surface: #222730;
+  --sc-latched: #1b1f26;
+  --sc-well: #0f1115;
+  --sc-line: #313744;
+  --sc-hi: rgba(255, 255, 255, 0.03);
+
+  --sc-ink: #e6eaf0;
+  --sc-ink-2: #c3c9d3;
+  --sc-muted: #8f98a6;
+
+  --sc-accent: #f5d84c;
+  --sc-on-accent: #14171c;
+
+  --sc-or-face: #2d323b;
+  --sc-inc: #3cd3a7;
+  --sc-inc-ink: #6fe2c0;
+  --sc-inc-face: #163a33;
+  --sc-exc: #ff5a6f;
+  --sc-exc-ink: #ff8695;
+  --sc-exc-face: #44202a;
+
+  --sc-key: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 #090b0e, 0 2px 4px -1px rgba(0,0,0,.45);
+  --sc-key-sm: inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 #090b0e, 0 1px 2px rgba(0,0,0,.35);
+  --sc-key-accent: inset 0 1px 0 rgba(255,255,255,.5), 0 1px 0 #b09a24, 0 2px 4px -1px rgba(0,0,0,.45);
+  --sc-latched-shadow: inset 0 1px 3px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.05);
+  --sc-or-shadow: inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.07), 0 1px 0 rgba(255,255,255,.04);
+  --sc-inc-shadow: inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(60,211,167,.38), 0 1px 0 rgba(255,255,255,.04);
+  --sc-exc-shadow: inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,90,111,.38), 0 1px 0 rgba(255,255,255,.04);
+  --sc-well-shadow: inset 0 2px 5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05);
+  --sc-well-shadow-sm: inset 0 1px 3px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.04);
+  --sc-card: inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 #090b0e, 0 4px 8px -3px rgba(0,0,0,.65);
+  --sc-card-hover: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 #090b0e, 0 20px 34px -12px rgba(0,0,0,.85);
+  --sc-menu: 0 22px 44px -10px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08);
+}
