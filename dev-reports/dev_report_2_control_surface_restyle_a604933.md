@@ -1,6 +1,6 @@
 # Development Report: Control Surface (Slate) Restyle
 
-**Commit:** pending
+**Commit:** a604933
 **Phase:** Rebrand
 **Breakthrough:** no
 
