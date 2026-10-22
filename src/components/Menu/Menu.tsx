@@ -1,5 +1,5 @@
-import { Menu as MantineMenu, MenuProps as MantineMenuProps, useMantineTheme, MantineTheme } from '@mantine/core'
-import { CheckIcon } from '@phosphor-icons/react'
+import { Menu as MantineMenu, MenuProps as MantineMenuProps } from '@mantine/core'
+import { CaretRightIcon, CheckIcon } from '@phosphor-icons/react'
 import { ReactNode } from 'react'
 import './Menu.css'
 
@@ -15,6 +15,7 @@ export interface MenuProps {
   children: ReactNode
   defaultOpened?: boolean
   position?: MantineMenuProps['position']
+  onChange?: (opened: boolean) => void
 }
 
 function isDivider(item: MenuItem): item is { divider: true } {
@@ -25,7 +26,7 @@ function isSubmenu(item: MenuItem): item is { label: string; items: MenuItem[] }
   return 'items' in item
 }
 
-function renderMenuItem(item: MenuItem, index: number, theme: MantineTheme) {
+function renderMenuItem(item: MenuItem, index: number) {
   if (isDivider(item)) {
     return <MantineMenu.Divider key={index} className="menu-divider"/>
   }
@@ -35,16 +36,14 @@ function renderMenuItem(item: MenuItem, index: number, theme: MantineTheme) {
       <MantineMenu.Sub key={index}>
         <MantineMenu.Sub.Target>
           <MantineMenu.Sub.Item
-            fz="md"
-            fw={theme.fontWeights.medium}
-            lts={theme.letterSpacing.small}
             className='menu-item'
+            rightSection={<CaretRightIcon size={13} />}
           >
             {item.label}
           </MantineMenu.Sub.Item>
         </MantineMenu.Sub.Target>
         <MantineMenu.Sub.Dropdown>
-          {item.items.map((subItem, subIndex) => renderMenuItem(subItem, subIndex, theme))}
+          {item.items.map((subItem, subIndex) => renderMenuItem(subItem, subIndex))}
         </MantineMenu.Sub.Dropdown>
       </MantineMenu.Sub>
     )
@@ -52,35 +51,29 @@ function renderMenuItem(item: MenuItem, index: number, theme: MantineTheme) {
 
   return (
     <MantineMenu.Item
-      fz="md"
-      fw={theme.fontWeights.medium}
-      lts={theme.letterSpacing.small}
       key={index}
       onClick={item.onClick}
       data-type={item.type}
       className='menu-item'
-      style={{ borderRadius: 'var(--mantine-radius-sm)' }}
-      rightSection={item.selected ? <CheckIcon size={14} /> : undefined}
+      rightSection={item.selected ? <CheckIcon size={13} /> : undefined}
     >
       {item.label}
     </MantineMenu.Item>
   )
 }
 
-export function Menu({ items, children, defaultOpened, position = 'bottom-end' }: MenuProps) {
-  const theme = useMantineTheme()
-
+export function Menu({ items, children, defaultOpened, position = 'bottom-end', onChange }: MenuProps) {
   return (
     <MantineMenu
       position={position}
       withinPortal
       defaultOpened={defaultOpened}
-      shadow='lg'
-      radius='md'
+      shadow='xl'
+      onChange={onChange}
     >
       <MantineMenu.Target>{children}</MantineMenu.Target>
       <MantineMenu.Dropdown className='menu-dropdown'>
-        {items.map((item, index) => renderMenuItem(item, index, theme))}
+        {items.map((item, index) => renderMenuItem(item, index))}
       </MantineMenu.Dropdown>
     </MantineMenu>
   )

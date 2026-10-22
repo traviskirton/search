@@ -11,8 +11,8 @@ import {
   Icon as PhosphorIcon,
   FinnTheHumanIcon,
   PersonSimpleCircleIcon,
+  DiamondIcon,
 } from '@phosphor-icons/react'
-import { useMantineTheme } from '@mantine/core'
 
 export type EntityType =
   | 'person'
@@ -25,6 +25,7 @@ export type EntityType =
   | 'vehicle'
   | 'franchise'
   | 'company'
+  | 'artifact'
 
 const iconMap: Record<EntityType, PhosphorIcon> = {
   person: PersonSimpleCircleIcon,
@@ -37,6 +38,7 @@ const iconMap: Record<EntityType, PhosphorIcon> = {
   vehicle: CarIcon,
   franchise: PlanetIcon,
   company: BuildingIcon,
+  artifact: DiamondIcon,
 }
 
 export interface TypeIconProps {
@@ -46,11 +48,9 @@ export interface TypeIconProps {
 }
 
 export function TypeIcon({ type, size = 18, color }: TypeIconProps) {
-  const theme = useMantineTheme()
   const IconComponent = iconMap[type as EntityType] || QuestionIcon
-  const iconColor = color || theme.colors.gray[7]
 
-  return <IconComponent size={size} color={iconColor} />
+  return <IconComponent size={size} style={{ color: color ?? 'var(--sc-ink)' }} />
 }
 
 export const entityTypes = Object.keys(iconMap) as EntityType[]

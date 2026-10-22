@@ -1,12 +1,31 @@
+.menu-dropdown {
+  background: var(--sc-surface);
+  border: 0;
+  border-radius: 10px;
+  padding: 5px;
+  min-width: 172px;
+  box-shadow: var(--sc-menu);
+}
+
+.menu-item {
+  padding: 10px 11px;
+  border-radius: 7px;
+  font: 500 14px/1 var(--mantine-font-family);
+  color: var(--sc-ink);
+}
+
 .menu-item:hover,
 .menu-item[data-hovered] {
-  background-color: var(--mantine-color-blue-1);
+  background-color: var(--sc-well);
+  box-shadow: var(--sc-well-shadow-sm);
 }
 
 .menu-item[data-type="danger"] {
-  color: var(--mantine-color-red-6);
+  color: var(--sc-exc-ink);
 }
 
 .menu-divider {
-  border-top-color: var(--mantine-color-gray-4) !important;
+  margin: 5px 4px;
+  border-top: 1px solid var(--sc-line) !important;
+  box-shadow: 0 1px 0 var(--sc-hi);
 }

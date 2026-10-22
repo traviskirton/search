@@ -1,0 +1,92 @@
+.panel {
+  position: sticky;
+  width: 380px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--sc-surface);
+  border-radius: 12px;
+  box-shadow: var(--sc-card);
+  color: var(--sc-ink);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--sc-line);
+}
+
+.title {
+  font: 700 16px/1 var(--mantine-font-family);
+}
+
+.status {
+  font: 500 10px/1 var(--mantine-font-family-monospace);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sc-muted);
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+}
+
+.message {
+  flex: none;
+  white-space: pre-wrap;
+}
+
+.message[data-role='user'] {
+  align-self: flex-end;
+  max-width: 78%;
+  padding: 9px 12px;
+  border-radius: 12px 12px 4px 12px;
+  background: var(--sc-ink);
+  color: var(--sc-bg);
+  font: 500 14px/1.4 var(--mantine-font-family);
+}
+
+.message[data-role='assistant'] {
+  align-self: flex-start;
+  max-width: 90%;
+  padding: 11px 13px;
+  border-radius: 4px 12px 12px 12px;
+  background: var(--sc-well);
+  box-shadow: var(--sc-well-shadow-sm);
+  color: var(--sc-ink-2);
+  font: 400 14px/1.45 var(--mantine-font-family);
+}
+
+.empty {
+  padding: 24px 0;
+  text-align: center;
+  font: 400 14px/1.45 var(--mantine-font-family);
+  color: var(--sc-muted);
+}
+
+.loader {
+  align-self: flex-start;
+}
+
+.error {
+  text-align: center;
+  font: 500 13px/1.4 var(--mantine-font-family);
+  color: var(--sc-exc-ink);
+}
+
+.composer {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+}
+
+.input.input {
+  height: 40px;
+  border-radius: 9px;
+  font: 400 14px/1 var(--mantine-font-family);
+}

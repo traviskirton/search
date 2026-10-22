@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react'
-import { DotsThreeVerticalIcon, UserCircleIcon } from '@phosphor-icons/react'
-import { ActionIcon, Group, Stack, Text, UnstyledButton, useMantineTheme } from '@mantine/core'
+import { useState, type ReactNode } from 'react'
+import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
+import { ActionIcon, UnstyledButton } from '@mantine/core'
 import { Menu, MenuItem } from '../Menu'
 import { TypeIcon } from '../TypeIcon'
 import classes from './SearchResult.module.css'
@@ -16,6 +16,15 @@ export interface SearchResultProps {
   onAsk?: () => void
 }
 
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('')
+}
+
 export function SearchResult({
   title,
   description,
@@ -26,7 +35,7 @@ export function SearchResult({
   onOpen,
   onAsk
 }: SearchResultProps) {
-  const theme = useMantineTheme()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const menuItems: MenuItem[] = [
     { label: 'Open', onClick: onOpen },
@@ -34,76 +43,43 @@ export function SearchResult({
   ]
 
   return (
-    <UnstyledButton
-      className={classes.result}
-      bg="white"
-      pt="sm"
-      pb="sm"
-      pl="sm"
-      pr="md"
-      bd="1px solid gray.3"
-      bdrs="md"
-      w="100%"
-      h="100%"
-    >
-      <Stack gap="xs" h="100%">
-        <Stack gap={theme.spacing.xxxs} style={{ flex: 1 }}>
-          {/* Title Row */}
-        <Group justify="space-between" align="center" gap="xxxs" pl={theme.spacing.xxs}>
-          <Text
-            fw={theme.fontWeights.semibold}
-            fz="xl"
-            c="gray.8"
-            style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}
-          >
-            {title}
-          </Text>
-          <Menu items={menuItems}>
-            <ActionIcon variant="subtle" color="gray" size="sm">
-              <DotsThreeVerticalIcon size={16} weight="bold" />
-            </ActionIcon>
-          </Menu>
-        </Group>
+    <UnstyledButton className={classes.result} w="100%" h="100%">
+      {/* Title Row */}
+      <div className={classes.titleRow}>
+        <div className={classes.title}>{title}</div>
+        <Menu items={menuItems} onChange={setMenuOpen}>
+          <ActionIcon variant="subtle" className={classes.dots} data-open={menuOpen || undefined}>
+            <DotsThreeVerticalIcon size={15} />
+          </ActionIcon>
+        </Menu>
+      </div>
 
-        {/* Description & Data */}
-        {(description || dataLine) && (
-          <Stack gap="xs" pl={theme.spacing.xxs} style={{ flex: 1 }}>
-            {description && (
-              <Text
-                fz="md"
-                c="gray.9"
-                lineClamp={5}
-                style={{ flex: 1 }}
-              >
-                {description}
-              </Text>
-            )}
-            {dataLine}
-          </Stack>
-        )}
-        
-        </Stack>
+      {/* Description & Data */}
+      {description && <div className={classes.description}>{description}</div>}
+      {dataLine}
 
-        {/* By Line */}
-        {(type || updatedBy || updatedAt) && (
-          <Group justify="space-between" align="start">
-            {type && (
-              <Group gap="xxs" p="xxxs">
-                <TypeIcon type={type.toLowerCase()} />
-                <Text fz="sm" c="gray.9">{type}</Text>
-              </Group>
-            )}
-            {(updatedBy || updatedAt) && (
-              <Group gap="xxs">
-                <Text fz="xs" c="gray.7">Updated by</Text>
-                <UserCircleIcon size={12} color={theme.colors.gray[7]} />
-                {updatedBy && <Text fz="xs" c="gray.9">{updatedBy}</Text>}
-                {updatedAt && <Text fz="xs" c="gray.9">{updatedAt}</Text>}
-              </Group>
-            )}
-          </Group>
-        )}
-      </Stack>
+      {/* By Line */}
+      {(type || updatedBy || updatedAt) && (
+        <div className={classes.footer} style={dataLine ? undefined : { marginTop: 'auto' }}>
+          {type && (
+            <span className={classes.type}>
+              <span className={classes.typeTile}>
+                <TypeIcon type={type.toLowerCase()} size={13} />
+              </span>
+              {type}
+            </span>
+          )}
+          {(updatedBy || updatedAt) && (
+            <span className={classes.updated}>
+              Updated by
+              {updatedBy && <span className={classes.avatar}>{initials(updatedBy)}</span>}
+              <span className={classes.updatedValue}>
+                {[updatedBy, updatedAt].filter(Boolean).join(', ')}
+              </span>
+            </span>
+          )}
+        </div>
+      )}
     </UnstyledButton>
   )
 }

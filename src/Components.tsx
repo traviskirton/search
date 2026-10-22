@@ -3,6 +3,7 @@ import { SearchResult, DataLine } from './components/SearchResult'
 import { Menu } from './components/Menu'
 import { TypeIcon, entityTypes } from './components/TypeIcon'
 import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
+import { ChatPanel } from './components/ChatPanel'
 
 function Components() {
   return (
@@ -26,19 +27,19 @@ function Components() {
                 { label: 'Delete'},
               ]}
             >
-               <ActionIcon variant="subtle" color="blue" size="md"><DotsThreeVerticalIcon color="black" weight='bold'/></ActionIcon>
+               <ActionIcon variant="key" size="md"><DotsThreeVerticalIcon /></ActionIcon>
             </Menu>
           </Group>
         </Box>
 
         <Box>
           <Title order={3} mb="sm">Type Icons</Title>
-          <Box bg="gray.1" p="md" style={{ borderRadius: 8 }}>
+          <Box p="md" bg="var(--sc-surface)" style={{ borderRadius: 12, boxShadow: 'var(--sc-card)' }}>
             <Group gap="lg">
               {entityTypes.map((type) => (
                 <Group key={type} gap="xs">
                   <TypeIcon type={type} size={20} />
-                  <Text fz="sm" c="gray.7">{type}</Text>
+                  <Text fz="sm" c="var(--sc-muted)">{type}</Text>
                 </Group>
               ))}
             </Group>
@@ -47,7 +48,7 @@ function Components() {
 
         <Box>
           <Title order={3} mb="sm">Search Result</Title>
-          <Box bg="#f5f5f5" p="md" style={{ borderRadius: 8 }}>
+          <Box>
             <Stack gap="sm">
               <SearchResult
                 title="Al Pacino"
@@ -75,9 +76,16 @@ function Components() {
                 title="221B Baker Street"
                 description="The famous fictional London address of detective Sherlock Holmes."
                 type="Location"
+                updatedBy="Ana Ruiz"
+                updatedAt="Oct 12"
               />
             </Stack>
           </Box>
+        </Box>
+
+        <Box>
+          <Title order={3} mb="sm">Chat Panel</Title>
+          <ChatPanel searchResults={[]} onSearchChange={() => {}} onFiltersChange={() => {}} />
         </Box>
       </Stack>
     </Container>

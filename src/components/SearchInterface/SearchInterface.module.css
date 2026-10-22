@@ -1,0 +1,226 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: var(--sc-surface);
+  border-radius: 12px;
+  box-shadow: var(--sc-card);
+}
+
+/* Search input (well) */
+.input.input {
+  height: 54px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font: 500 24px/1 var(--mantine-font-family);
+}
+
+.ribbon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.funnel[data-variant='key'] {
+  color: var(--sc-muted);
+}
+
+.chips {
+  flex: 1;
+  min-width: 0;
+}
+
+.chipRow {
+  display: flex;
+  gap: 8px;
+  padding: 4px 2px 6px;
+}
+
+/* Filter state faces — shared by ribbon chips and panel tags. All states are latched. */
+.chip,
+.tag[data-state] {
+  background: var(--sc-or-face);
+  box-shadow: var(--sc-or-shadow);
+  transform: translateY(1px);
+  color: var(--sc-ink);
+}
+
+.chip[data-state='include'],
+.tag[data-state='include'] {
+  background: var(--sc-inc-face);
+  box-shadow: var(--sc-inc-shadow);
+}
+
+.chip[data-state='exclude'],
+.tag[data-state='exclude'] {
+  background: var(--sc-exc-face);
+  box-shadow: var(--sc-exc-shadow);
+}
+
+.stateIcon[data-state='include'] {
+  color: var(--sc-inc-ink);
+}
+
+.stateIcon[data-state='exclude'] {
+  color: var(--sc-exc-ink);
+}
+
+/* Ribbon chip: split button */
+.chip {
+  display: flex;
+  flex: none;
+  height: 30px;
+  border-radius: 8px;
+  font: 600 13px/1 var(--mantine-font-family);
+}
+
+.chipLabel,
+.chipRemove {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  font: inherit;
+}
+
+.chipLabel {
+  gap: 7px;
+  padding: 0 9px 0 10px;
+  white-space: nowrap;
+}
+
+.chipRemove {
+  padding: 0 8px;
+  color: var(--sc-muted);
+  border-left: 1px solid var(--sc-line);
+}
+
+.chipRemove:hover {
+  color: var(--sc-ink);
+}
+
+/* Sort control: raised split key */
+.sort {
+  display: flex;
+  flex: none;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--sc-surface);
+  box-shadow: var(--sc-key);
+  font: 500 12px/1 var(--mantine-font-family-monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sc-ink);
+  transition: box-shadow 80ms ease-out, transform 80ms ease-out;
+}
+
+.sort[data-open] {
+  background: var(--sc-latched);
+  box-shadow: var(--sc-latched-shadow);
+  transform: translateY(1px);
+}
+
+.sortLabel,
+.sortDirection {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.sortLabel {
+  gap: 8px;
+  padding: 0 11px;
+}
+
+.caret {
+  color: var(--sc-muted);
+}
+
+.sortDirection {
+  padding: 0 10px;
+  border-left: 1px solid var(--sc-line);
+}
+
+/* Filter panel */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding-bottom: 1px;
+}
+
+.tab {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border-radius: 7px;
+  background: var(--sc-surface);
+  box-shadow: var(--sc-key-sm);
+  font: 500 12px/1 var(--mantine-font-family-monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sc-muted);
+}
+
+.tab[data-has-filters] {
+  color: var(--sc-ink);
+}
+
+.tab[data-active] {
+  background: var(--sc-latched);
+  box-shadow: var(--sc-latched-shadow);
+  transform: translateY(1px);
+  color: var(--sc-ink);
+}
+
+.tab:not([data-active]):active {
+  background: var(--sc-latched);
+  box-shadow: var(--sc-latched-shadow);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sc-accent);
+  box-shadow: 0 0 6px var(--sc-accent);
+}
+
+.divider {
+  height: 1px;
+  background: var(--sc-line);
+  box-shadow: 0 1px 0 var(--sc-hi);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 7px;
+  padding-bottom: 2px;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  background: var(--sc-surface);
+  box-shadow: var(--sc-key-sm);
+  font: 500 13px/1 var(--mantine-font-family);
+  color: var(--sc-ink-2);
+  white-space: nowrap;
+}
+
+.tag:not([data-state]):active {
+  background: var(--sc-latched);
+  box-shadow: var(--sc-latched-shadow);
+}
+
+.tag[data-state] {
+  font-weight: 600;
+}

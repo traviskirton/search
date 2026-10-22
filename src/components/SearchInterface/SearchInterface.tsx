@@ -1,14 +1,4 @@
-import {
-  ActionIcon,
-  Button,
-  Divider,
-  Group,
-  Paper,
-  ScrollArea,
-  Stack,
-  TextInput,
-  useMantineTheme,
-} from '@mantine/core'
+import { ActionIcon, ScrollArea, TextInput, UnstyledButton } from '@mantine/core'
 import {
   FunnelIcon,
   XIcon,
@@ -16,9 +6,12 @@ import {
   ExclamationMarkIcon,
   ArrowUpIcon,
   ArrowDownIcon,
+  CaretDownIcon,
+  CaretUpIcon,
 } from '@phosphor-icons/react'
 import { useState, useCallback, useEffect } from 'react'
 import { Menu } from '../Menu'
+import classes from './SearchInterface.module.css'
 import { TAG_TAXONOMY, tagToLabel } from '../../tag-taxonomy'
 import type { FilterModifier, SelectedFilter, SortOption, SortDirection } from '../../types'
 
@@ -55,7 +48,7 @@ export function SearchInterface({
   const [filtersVisible, setFiltersVisible] = useState(false)
   const [optionHeld, setOptionHeld] = useState(false)
   const [filterButtonHovered, setFilterButtonHovered] = useState(false)
-  const theme = useMantineTheme()
+  const [sortMenuOpen, setSortMenuOpen] = useState(false)
 
   // Track option/alt key state and keyboard shortcuts
   useEffect(() => {
@@ -175,184 +168,158 @@ export function SearchInterface({
     onSortDirectionChange(sortDirection === 'asc' ? 'desc' : 'asc')
   }, [sortDirection, onSortDirectionChange])
 
-  // Determine filter button color (red only when option held AND hovering AND has filters)
-  const filterButtonColor = optionHeld && filterButtonHovered && filters.length > 0 ? 'red' : filters.length > 0 ? 'blue' : 'gray'
+  // Funnel key: neutral with no filters, accent with filters, red when Option-click would clear them
+  const willClear = optionHeld && filterButtonHovered && filters.length > 0
+  const filterButtonVariant = willClear ? 'danger' : filters.length > 0 ? 'accent' : 'key'
 
   // Get current sort label
   const currentSortLabel = SORT_OPTIONS.find((o) => o.value === sortBy)?.label ?? 'Sort'
 
   return (
-    <Paper shadow={filtersVisible ? 'sm' : undefined} p="sm" radius="md" bd={filtersVisible ? '1px solid gray.4' : undefined}>
-      <Stack gap="sm">
-        {/* Search input */}
-        <TextInput
-          placeholder="Search..."
-          value={value}
-          onChange={(e) => onChange(e.currentTarget.value)}
-          size="md"
-          w="100%"
-        />
+    <div className={classes.panel}>
+      {/* Search input */}
+      <TextInput
+        placeholder="Search..."
+        value={value}
+        onChange={(e) => onChange(e.currentTarget.value)}
+        w="100%"
+        classNames={{ input: classes.input }}
+      />
 
-        {/* Ribbon row: filter icon, selected tags, sort controls */}
-        <Group gap="sm" justify="space-between" p="0" m="0">
-          <ActionIcon
-            variant="subtle"
-            color={filterButtonColor}
-            size="lg"
-            onClick={handleFilterButtonClick}
-            onMouseEnter={() => setFilterButtonHovered(true)}
-            onMouseLeave={() => setFilterButtonHovered(false)}
-            title={optionHeld && filterButtonHovered && filters.length > 0 ? 'Clear all filters (Option+Click)' : filtersVisible ? 'Hide filters' : 'Show filters'}
+      {/* Ribbon row: filter icon, selected tags, sort controls */}
+      <div className={classes.ribbon}>
+        <ActionIcon
+          variant={filterButtonVariant}
+          size={34}
+          className={classes.funnel}
+          onClick={handleFilterButtonClick}
+          onMouseEnter={() => setFilterButtonHovered(true)}
+          onMouseLeave={() => setFilterButtonHovered(false)}
+          title={willClear ? 'Clear all filters (Option+Click)' : filtersVisible ? 'Hide filters' : 'Show filters'}
+        >
+          <FunnelIcon size={16} />
+        </ActionIcon>
+
+        {/* Selected tag ribbon */}
+        <ScrollArea className={classes.chips} scrollbarSize={0} offsetScrollbars>
+          <div className={classes.chipRow}>
+            {filters.map((filter) => (
+              <FilterChip
+                key={filter.tag}
+                filter={filter}
+                onToggleModifier={() => handleToggleModifier(filter.tag)}
+                onRemove={() => handleRemoveFilter(filter.tag)}
+              />
+            ))}
+          </div>
+        </ScrollArea>
+
+        {/* Sort controls: split key */}
+        <div className={classes.sort} data-open={sortMenuOpen || undefined}>
+          <Menu
+            items={SORT_OPTIONS.map((option) => ({
+              label: option.label,
+              selected: option.value === sortBy,
+              onClick: () => onSortByChange(option.value),
+            }))}
+            position="bottom-end"
+            onChange={setSortMenuOpen}
           >
-            <FunnelIcon size={16} />
-          </ActionIcon>
+            <UnstyledButton className={classes.sortLabel}>
+              {currentSortLabel}
+              {sortMenuOpen
+                ? <CaretUpIcon size={10} className={classes.caret} />
+                : <CaretDownIcon size={10} className={classes.caret} />}
+            </UnstyledButton>
+          </Menu>
+          <UnstyledButton className={classes.sortDirection} onClick={handleToggleSortDirection}>
+            {sortDirection === 'asc' ? <ArrowUpIcon size={13} /> : <ArrowDownIcon size={13} />}
+          </UnstyledButton>
+        </div>
+      </div>
 
-          {/* Selected tag ribbon */}
-          <ScrollArea style={{ flex: 1 }} scrollbarSize={0} offsetScrollbars>
-            <Group justify="start" gap="xs" wrap="nowrap">
-              {filters.map((filter) => (
-                <RibbonTag
-                  key={filter.tag}
-                  filter={filter}
-                  onToggleModifier={() => handleToggleModifier(filter.tag)}
-                  onRemove={() => handleRemoveFilter(filter.tag)}
-                />
-              ))}
-            </Group>
-          </ScrollArea>
-
-          {/* Sort controls - Button Group */}
-          <Button.Group>
-            <Menu
-              items={SORT_OPTIONS.map((option) => ({
-                label: option.label,
-                selected: option.value === sortBy,
-                onClick: () => onSortByChange(option.value),
-              }))}
-              position="bottom-end"
-            >
-              <Button
-                size="sm"
-                variant="outline"
-                color="dark"
-              >
-                {currentSortLabel}
-              </Button>
-            </Menu>
-            <Button
-              size="sm"
-              variant="outline"
-              color="dark"
-              onClick={handleToggleSortDirection}
-              px="xs"
-            >
-              {sortDirection === 'asc' ? <ArrowUpIcon size={14} /> : <ArrowDownIcon size={14} />}
-            </Button>
-          </Button.Group>
-        </Group>
-        {filtersVisible && (
-          <Stack gap={theme.spacing.xxxs}>
-            {/* Category buttons */}
-            <ScrollArea scrollbarSize={4} offsetScrollbars>
-              <Group gap="xs" wrap="nowrap">
-                {TAG_TAXONOMY.map((category) => {
-                  const isSelected = category.id === selectedCategory
-                  const hasFiltersInCategory = filters.some(
-                    (f) => f.category === category.id
-                  )
-                  return (
-                    <Button
-                      key={category.id}
-                      variant={isSelected ? 'light' : 'subtle'}
-                      color={hasFiltersInCategory ? 'blue' : 'dark'}
-                      size="sm"
-                      onClick={() => setSelectedCategory(category.id)}
-                    >
-                      {category.label}
-                    </Button>
-                  )
-                })}
-              </Group>
-            </ScrollArea>
-            <Divider />
-            {/* Tags for selected category */}
-            <Group gap="xs" wrap="wrap" pt={theme.spacing.xxs}>
-              {currentTags.map((tag) => {
-                const filter = getTagFilter(tag)
-                const isSelected = !!filter
-
+      {filtersVisible && (
+        <>
+          {/* Category tabs */}
+          <ScrollArea scrollbarSize={4} offsetScrollbars>
+            <div className={classes.tabs}>
+              {TAG_TAXONOMY.map((category) => {
+                const isSelected = category.id === selectedCategory
+                const hasFiltersInCategory = filters.some(
+                  (f) => f.category === category.id
+                )
                 return (
-                  <Button
-                    key={tag}
-                    variant={isSelected ? 'light' : 'subtle'}
-                    color={
-                      isSelected
-                        ? filter.modifier === 'exclude'
-                          ? 'red'
-                          : filter.modifier === 'include'
-                            ? 'green'
-                            : 'blue'
-                        : 'dark'
-                    }
-                    size="xs"
-                    onClick={() => handleTagClick(tag)}
-                    style={{ whiteSpace: 'nowrap' }}
+                  <UnstyledButton
+                    key={category.id}
+                    className={classes.tab}
+                    data-active={isSelected || undefined}
+                    data-has-filters={hasFiltersInCategory || undefined}
+                    onClick={() => setSelectedCategory(category.id)}
                   >
-                    {tagToLabel(tag)}
-                  </Button>
+                    {hasFiltersInCategory && <span className={classes.dot} />}
+                    {category.label}
+                  </UnstyledButton>
                 )
               })}
-            </Group>
-          </Stack>
-        )}
-      </Stack>
-    </Paper>
+            </div>
+          </ScrollArea>
+          <div className={classes.divider} />
+          {/* Tags for selected category */}
+          <div className={classes.tags}>
+            {currentTags.map((tag) => {
+              const filter = getTagFilter(tag)
+              const state = filter ? modifierToState(filter.modifier) : undefined
+
+              return (
+                <UnstyledButton
+                  key={tag}
+                  className={classes.tag}
+                  data-state={state}
+                  onClick={() => handleTagClick(tag)}
+                >
+                  {state && <StateIcon state={state} size={10} />}
+                  {tagToLabel(tag)}
+                </UnstyledButton>
+              )
+            })}
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 
-// Ribbon tag component with modifier toggle
-interface RibbonTagProps {
+type FilterState = 'or' | 'include' | 'exclude'
+
+function modifierToState(modifier: FilterModifier): FilterState {
+  return modifier === 'none' ? 'or' : modifier
+}
+
+function StateIcon({ state, size }: { state: FilterState; size: number }) {
+  if (state === 'include') return <PlusIcon size={size} className={classes.stateIcon} data-state={state} />
+  if (state === 'exclude') return <ExclamationMarkIcon size={size} className={classes.stateIcon} data-state={state} />
+  return null
+}
+
+// Ribbon chip: label cycles the modifier, × removes it
+interface FilterChipProps {
   filter: SelectedFilter
   onToggleModifier: () => void
   onRemove: () => void
 }
 
-function RibbonTag({ filter, onToggleModifier, onRemove }: RibbonTagProps) {
-  const theme = useMantineTheme()
-
-  const color =
-    filter.modifier === 'exclude' ? 'red' :
-    filter.modifier === 'include' ? 'green' : 'blue'
-
-  const icon =
-    filter.modifier === 'exclude' ? <ExclamationMarkIcon size={12} /> :
-    filter.modifier === 'include' ? <PlusIcon size={12} /> : null
+function FilterChip({ filter, onToggleModifier, onRemove }: FilterChipProps) {
+  const state = modifierToState(filter.modifier)
 
   return (
-    <Button.Group>
-      <Button
-        size="sm"
-        variant="light"
-        color={color}
-        onClick={onToggleModifier}
-        leftSection={icon}
-        styles={{
-          root: {
-            paddingRight: theme.spacing.xs,
-          },
-        }}
-      >
+    <div className={classes.chip} data-state={state}>
+      <UnstyledButton className={classes.chipLabel} onClick={onToggleModifier}>
+        <StateIcon state={state} size={11} />
         {tagToLabel(filter.tag)}
-      </Button>
-      <Button
-        size="sm"
-        variant="light"
-        color={color}
-        onClick={onRemove}
-        px="xxs"
-      >
-        <XIcon size={12} />
-      </Button>
-    </Button.Group>
+      </UnstyledButton>
+      <UnstyledButton className={classes.chipRemove} onClick={onRemove} aria-label={`Remove ${tagToLabel(filter.tag)}`}>
+        <XIcon size={11} />
+      </UnstyledButton>
+    </div>
   )
 }

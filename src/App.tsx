@@ -1,4 +1,4 @@
-import { Box, Title, Text, Loader, useMantineTheme } from '@mantine/core'
+import { Box, Center, Text, Loader, useMantineTheme } from '@mantine/core'
 import { SearchResult, DataLine } from './components/SearchResult'
 import { SearchInterface } from './components/SearchInterface'
 import { useSearch } from './hooks/useSearch'
@@ -34,7 +34,9 @@ function App() {
         onSortDirectionChange={setSortDirection}
       />
       {loading ? (
-        <Loader size="sm" />
+        <Center py="xl">
+          <Loader />
+        </Center>
       ) : (
         <Box
           mt="md"
@@ -57,7 +59,7 @@ function App() {
         </Box>
       )}
       {!loading && (search || filters.length > 0) && results.length === 0 && (
-        <Text c="dimmed" ta="center" py="md">
+        <Text fw={theme.fontWeights.medium} c="var(--sc-muted)" ta="center" py="md">
           No results found
         </Text>
       )}

@@ -1,18 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import {
-  Paper,
-  Stack,
-  Text,
-  TextInput,
-  ActionIcon,
-  ScrollArea,
-  Group,
-  Box,
-  Loader,
-  useMantineTheme,
-} from '@mantine/core'
+import { TextInput, ActionIcon, ScrollArea, Loader, useMantineTheme } from '@mantine/core'
 import { PaperPlaneRightIcon } from '@phosphor-icons/react'
 import { useChat } from '../../hooks/useChat'
+import classes from './ChatPanel.module.css'
 import type { SearchResultData, SelectedFilter } from '../../types'
 
 export interface ChatPanelProps {
@@ -52,77 +42,51 @@ export function ChatPanel({ searchResults, onSearchChange, onFiltersChange }: Ch
   }, [messages])
 
   return (
-    <Paper
-      w={380}
-      h="calc(100vh - var(--mantine-spacing-xxxl) * 2)"
-      bd="1px solid gray.3"
-      radius="md"
-      style={{ position: 'sticky', top: theme.spacing.xxxl, flexShrink: 0 }}
+    <div
+      className={classes.panel}
+      style={{ height: `calc(100vh - ${theme.spacing.xl} * 2)`, top: theme.spacing.xl }}
     >
-      <Stack h="100%" gap={0}>
-        <Box p="sm" style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
-          <Text fw={theme.fontWeights.semibold} fz="lg">
-            Chat
-          </Text>
-        </Box>
+      <div className={classes.header}>
+        <span className={classes.title}>Chat</span>
+        <span className={classes.status}>{isLoading ? 'Working' : 'Ready'}</span>
+      </div>
 
-        <ScrollArea flex={1} p="sm" viewportRef={viewport}>
-          <Stack gap="sm">
-            {messages.length === 0 && (
-              <Text c="dimmed" fz="sm" ta="center" py="xl">
-                Ask questions or search with natural language
-              </Text>
-            )}
-            {messages.map((message, index) => (
-              <Box
-                key={index}
-                p="xs"
-                bg={message.role === 'user' ? 'blue.0' : 'gray.0'}
-                style={{ borderRadius: theme.radius.sm }}
-              >
-                <Text fz="xs" fw={theme.fontWeights.medium} c="gray.6" mb={4}>
-                  {message.role === 'user' ? 'You' : 'Assistant'}
-                </Text>
-                <Text fz="sm" style={{ whiteSpace: 'pre-wrap' }}>
-                  {message.content}
-                </Text>
-              </Box>
-            ))}
-            {isLoading && (
-              <Group justify="center" py="xs">
-                <Loader size="sm" />
-              </Group>
-            )}
-            {error && (
-              <Text c="red" fz="sm" ta="center">
-                {error}
-              </Text>
-            )}
-          </Stack>
-        </ScrollArea>
+      <ScrollArea flex={1} viewportRef={viewport}>
+        <div className={classes.messages}>
+          {messages.length === 0 && (
+            <div className={classes.empty}>Ask questions or search with natural language</div>
+          )}
+          {messages.map((message, index) => (
+            <div key={index} className={classes.message} data-role={message.role}>
+              {message.content}
+            </div>
+          ))}
+          {isLoading && <Loader size="sm" className={classes.loader} />}
+          {error && <div className={classes.error}>{error}</div>}
+        </div>
+      </ScrollArea>
 
-        <Box p="sm" style={{ borderTop: '1px solid var(--mantine-color-gray-3)' }}>
-          <Group gap="xs">
-            <TextInput
-              flex={1}
-              placeholder="Search or ask..."
-              value={input}
-              onChange={(e) => setInput(e.currentTarget.value)}
-              onKeyDown={handleKeyDown}
-              disabled={isLoading}
-            />
-            <ActionIcon
-              variant="filled"
-              color="blue"
-              size="lg"
-              onClick={handleSend}
-              disabled={!input.trim() || isLoading}
-            >
-              <PaperPlaneRightIcon size={18} />
-            </ActionIcon>
-          </Group>
-        </Box>
-      </Stack>
-    </Paper>
+      <div className={classes.composer}>
+        <TextInput
+          flex={1}
+          placeholder="Ask or search in plain language…"
+          value={input}
+          onChange={(e) => setInput(e.currentTarget.value)}
+          onKeyDown={handleKeyDown}
+          disabled={isLoading}
+          classNames={{ input: classes.input }}
+        />
+        <ActionIcon
+          variant="accent"
+          size={40}
+          radius={9}
+          onClick={handleSend}
+          disabled={!input.trim() || isLoading}
+          aria-label="Send"
+        >
+          <PaperPlaneRightIcon size={16} />
+        </ActionIcon>
+      </div>
+    </div>
   )
 }
