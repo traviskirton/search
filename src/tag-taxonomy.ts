@@ -10,6 +10,8 @@ const TAG_LABELS: Record<string, string> = {
   'post-war': 'Post-War',
   'dc-universe': 'DC Universe',
   'mi6': 'MI6',
+  // the `person` type is real-world people; fictional ones are `character`
+  'person': 'Real Person',
 }
 
 /** Words kept lowercase unless they start the label */

@@ -4,6 +4,7 @@ import { Menu } from './components/Menu'
 import { TypeIcon, entityTypes } from './components/TypeIcon'
 import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
 import { ChatPanel } from './components/ChatPanel'
+import { tagToLabel } from './tag-taxonomy'
 
 function Components() {
   return (
@@ -39,7 +40,7 @@ function Components() {
               {entityTypes.map((type) => (
                 <Group key={type} gap="xs">
                   <TypeIcon type={type} size={20} />
-                  <Text fz="sm" c="var(--sc-muted)">{type}</Text>
+                  <Text fz="sm" c="var(--sc-muted)">{tagToLabel(type)}</Text>
                 </Group>
               ))}
             </Group>

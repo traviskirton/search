@@ -3,6 +3,7 @@ import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
 import { ActionIcon, UnstyledButton } from '@mantine/core'
 import { Menu, MenuItem } from '../Menu'
 import { TypeIcon } from '../TypeIcon'
+import { tagToLabel } from '../../tag-taxonomy'
 import classes from './SearchResult.module.css'
 
 export interface SearchResultProps {
@@ -66,7 +67,7 @@ export function SearchResult({
               <span className={classes.typeTile}>
                 <TypeIcon type={type.toLowerCase()} size={13} />
               </span>
-              {type}
+              {tagToLabel(type.toLowerCase())}
             </span>
           )}
           {(updatedBy || updatedAt) && (
