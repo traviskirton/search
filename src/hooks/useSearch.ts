@@ -18,6 +18,28 @@ export interface UseSearchResult {
   setSortDirection: (dir: SortDirection) => void
 }
 
+/** Categories that only match their own facet fields. The rest match a value
+ * found anywhere on the entity, so e.g. Theme "family" would otherwise match
+ * the family-friendly rating. */
+const CATEGORY_FIELDS: Record<string, string[]> = {
+  theme: ['theme'],
+}
+
+/** Values an entity offers to one category */
+function getCategoryValues(entity: Entity, categoryId: string, allValues: Set<string>): Set<string> {
+  const fields = CATEGORY_FIELDS[categoryId]
+  if (!fields) return allValues
+
+  const values = new Set<string>()
+  for (const field of fields) {
+    const val = entity.facets?.[field]
+    for (const v of Array.isArray(val) ? val : [val]) {
+      if (typeof v === 'string') values.add(v.toLowerCase())
+    }
+  }
+  return values
+}
+
 export function useSearch(): UseSearchResult {
   const [search, setSearch] = useState('')
   const [filters, setFilters] = useState<SelectedFilter[]>([])
@@ -92,7 +114,7 @@ export function useSearch(): UseSearchResult {
       const categoryFilters = filters.filter((f) => f.category === categoryId)
       if (categoryFilters.length === 0) return true
 
-      const values = entityValues || getEntityValues(entity)
+      const values = getCategoryValues(entity, categoryId, entityValues || getEntityValues(entity))
 
       const noneFilters = categoryFilters.filter((f) => f.modifier === 'none')
       const includeFilters = categoryFilters.filter((f) => f.modifier === 'include')
@@ -180,8 +202,9 @@ export function useSearch(): UseSearchResult {
           if (!entityMatchesCategoryFilters(entity, category.id, entityValues)) continue
         }
 
+        const categoryValues = getCategoryValues(entity, category.id, entityValues)
         for (const tag of category.children) {
-          if (entityValues.has(tag.toLowerCase())) {
+          if (categoryValues.has(tag.toLowerCase())) {
             available[category.id].add(tag)
           }
         }
