@@ -1,6 +1,6 @@
 # Development Report: Instant Typing in Search
 
-**Commit:** [hash]
+**Commit:** d57bc39
 **Phase:** Performance
 **Breakthrough:** yes
 
