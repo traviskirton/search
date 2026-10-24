@@ -80,7 +80,7 @@ export function useSearch(): UseSearchResult {
 
   // Load the search index
   useEffect(() => {
-    fetch('/search-index.json')
+    fetch(`${import.meta.env.BASE_URL}search-index.json`)
       .then((res) => res.text())
       .then((data) => {
         const loadedIndex = MiniSearch.loadJSON(data, {
