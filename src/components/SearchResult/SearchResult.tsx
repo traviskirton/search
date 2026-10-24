@@ -37,22 +37,33 @@ export function SearchResult({
   onAsk
 }: SearchResultProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  // Mantine menus are costly to mount, so a card builds its menu on first hover or focus
+  const [menuMounted, setMenuMounted] = useState(false)
+  const mountMenu = () => setMenuMounted(true)
 
   const menuItems: MenuItem[] = [
     { label: 'Open', onClick: onOpen },
     { label: 'Ask', onClick: onAsk },
   ]
 
+  const dots = (
+    <ActionIcon variant="subtle" className={classes.dots} data-open={menuOpen || undefined}>
+      <DotsThreeVerticalIcon size={15} />
+    </ActionIcon>
+  )
+
   return (
-    <UnstyledButton className={classes.result} w="100%" h="100%">
+    <UnstyledButton className={classes.result} w="100%" h="100%" onPointerEnter={mountMenu} onFocus={mountMenu}>
       {/* Title Row */}
       <div className={classes.titleRow}>
         <div className={classes.title}>{title}</div>
-        <Menu items={menuItems} onChange={setMenuOpen}>
-          <ActionIcon variant="subtle" className={classes.dots} data-open={menuOpen || undefined}>
-            <DotsThreeVerticalIcon size={15} />
-          </ActionIcon>
-        </Menu>
+        {menuMounted ? (
+          <Menu items={menuItems} onChange={setMenuOpen}>
+            {dots}
+          </Menu>
+        ) : (
+          dots
+        )}
       </div>
 
       {/* Description & Data */}

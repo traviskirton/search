@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useDeferredValue } from 'react'
 import MiniSearch from 'minisearch'
 import { TAG_TAXONOMY } from '../tag-taxonomy'
 import type { Entity, SelectedFilter, SearchResultData, SortOption, SortDirection } from '../types'
@@ -40,15 +40,43 @@ function getCategoryValues(entity: Entity, categoryId: string, allValues: Set<st
   return values
 }
 
+/** All searchable values for an entity */
+function getEntityValues(entity: Entity): Set<string> {
+  const values = new Set<string>()
+
+  if (entity.type) values.add(entity.type.toLowerCase())
+
+  if (entity.tagsArray) {
+    entity.tagsArray.forEach((tag) => values.add(tag.toLowerCase()))
+  }
+
+  if (entity.facets) {
+    Object.values(entity.facets).forEach((val) => {
+      if (Array.isArray(val)) {
+        val.forEach((v) => {
+          if (typeof v === 'string') values.add(v.toLowerCase())
+        })
+      } else if (typeof val === 'string') {
+        values.add(val.toLowerCase())
+      }
+    })
+  }
+
+  return values
+}
+
 export function useSearch(): UseSearchResult {
   const [search, setSearch] = useState('')
   const [filters, setFilters] = useState<SelectedFilter[]>([])
-  const [results, setResults] = useState<SearchResultData[]>([])
   const [allEntities, setAllEntities] = useState<Entity[]>([])
   const [index, setIndex] = useState<MiniSearch | null>(null)
   const [loading, setLoading] = useState(true)
   const [sortBy, setSortBy] = useState<SortOption>('relevance')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
+
+  // The input renders with `search`; everything derived from it renders with
+  // the deferred copy so typing never waits on the results grid
+  const deferredSearch = useDeferredValue(search)
 
   // Load the search index
   useEffect(() => {
@@ -83,38 +111,20 @@ export function useSearch(): UseSearchResult {
       })
   }, [])
 
-  // Get all searchable values for an entity
-  const getEntityValues = useCallback((entity: Entity): Set<string> => {
-    const values = new Set<string>()
+  const entityMap = useMemo(() => new Map(allEntities.map((e) => [e.id, e])), [allEntities])
 
-    if (entity.type) values.add(entity.type.toLowerCase())
-
-    if (entity.tagsArray) {
-      entity.tagsArray.forEach((tag) => values.add(tag.toLowerCase()))
-    }
-
-    if (entity.facets) {
-      Object.values(entity.facets).forEach((val) => {
-        if (Array.isArray(val)) {
-          val.forEach((v) => {
-            if (typeof v === 'string') values.add(v.toLowerCase())
-          })
-        } else if (typeof val === 'string') {
-          values.add(val.toLowerCase())
-        }
-      })
-    }
-
-    return values
-  }, [])
+  const entityValues = useMemo(
+    () => new Map(allEntities.map((e) => [e.id, getEntityValues(e)])),
+    [allEntities]
+  )
 
   // Check if entity matches filters for a specific category
   const entityMatchesCategoryFilters = useCallback(
-    (entity: Entity, categoryId: string, entityValues?: Set<string>): boolean => {
+    (entity: Entity, categoryId: string): boolean => {
       const categoryFilters = filters.filter((f) => f.category === categoryId)
       if (categoryFilters.length === 0) return true
 
-      const values = getCategoryValues(entity, categoryId, entityValues || getEntityValues(entity))
+      const values = getCategoryValues(entity, categoryId, entityValues.get(entity.id) ?? getEntityValues(entity))
 
       const noneFilters = categoryFilters.filter((f) => f.modifier === 'none')
       const includeFilters = categoryFilters.filter((f) => f.modifier === 'include')
@@ -138,7 +148,7 @@ export function useSearch(): UseSearchResult {
 
       return true
     },
-    [filters, getEntityValues]
+    [filters, entityValues]
   )
 
   // Check if an entity matches all filters
@@ -146,18 +156,26 @@ export function useSearch(): UseSearchResult {
     (entity: Entity): boolean => {
       if (filters.length === 0) return true
 
-      const entityValues = getEntityValues(entity)
-
       for (const category of TAG_TAXONOMY) {
-        if (!entityMatchesCategoryFilters(entity, category.id, entityValues)) {
+        if (!entityMatchesCategoryFilters(entity, category.id)) {
           return false
         }
       }
 
       return true
     },
-    [filters, getEntityValues, entityMatchesCategoryFilters]
+    [filters, entityMatchesCategoryFilters]
   )
+
+  // Text search, run once per query and shared by tags and results
+  const searchHits = useMemo(() => {
+    if (!deferredSearch.trim() || !index) return null
+    return index.search(deferredSearch, {
+      prefix: true,
+      fuzzy: deferredSearch.length > 3 ? 0.2 : false,
+      boost: { name: 10, aliases: 5, related: 3, tags: 2, description: 1 },
+    })
+  }, [deferredSearch, index])
 
   // Compute available tags for each category based on current filters
   const availableTags = useMemo(() => {
@@ -167,15 +185,7 @@ export function useSearch(): UseSearchResult {
       available[category.id] = new Set<string>()
     }
 
-    // Get search match IDs if there's a query
-    let searchMatchIds: Set<string> | null = null
-    if (search.trim() && index) {
-      const searchResults = index.search(search, {
-        prefix: true,
-        fuzzy: search.length > 3 ? 0.2 : false,
-      })
-      searchMatchIds = new Set(searchResults.map((r) => r.id))
-    }
+    const searchMatchIds = searchHits ? new Set(searchHits.map((r) => r.id)) : null
 
     const categoryHasMust = (categoryId: string) =>
       filters.some((f) => f.category === categoryId && f.modifier === 'include')
@@ -183,14 +193,14 @@ export function useSearch(): UseSearchResult {
     for (const entity of allEntities) {
       if (searchMatchIds && !searchMatchIds.has(entity.id)) continue
 
-      const entityValues = getEntityValues(entity)
+      const values = entityValues.get(entity.id) ?? getEntityValues(entity)
 
       for (const category of TAG_TAXONOMY) {
         let matchesOtherCategories = true
 
         for (const otherCategory of TAG_TAXONOMY) {
           if (otherCategory.id === category.id) continue
-          if (!entityMatchesCategoryFilters(entity, otherCategory.id, entityValues)) {
+          if (!entityMatchesCategoryFilters(entity, otherCategory.id)) {
             matchesOtherCategories = false
             break
           }
@@ -199,10 +209,10 @@ export function useSearch(): UseSearchResult {
         if (!matchesOtherCategories) continue
 
         if (categoryHasMust(category.id)) {
-          if (!entityMatchesCategoryFilters(entity, category.id, entityValues)) continue
+          if (!entityMatchesCategoryFilters(entity, category.id)) continue
         }
 
-        const categoryValues = getCategoryValues(entity, category.id, entityValues)
+        const categoryValues = getCategoryValues(entity, category.id, values)
         for (const tag of category.children) {
           if (categoryValues.has(tag.toLowerCase())) {
             available[category.id].add(tag)
@@ -217,25 +227,16 @@ export function useSearch(): UseSearchResult {
     }
 
     return available
-  }, [allEntities, filters, search, index, getEntityValues, entityMatchesCategoryFilters])
+  }, [allEntities, filters, searchHits, entityValues, entityMatchesCategoryFilters])
 
-  // Update results when search or filters change
-  useEffect(() => {
-    if (!index) {
-      setResults([])
-      return
-    }
+  // Results for the current search and filters
+  const results = useMemo(() => {
+    if (!index) return []
 
     let searchResults: SearchResultData[]
 
-    if (search.trim()) {
-      const miniSearchResults = index.search(search, {
-        prefix: true,
-        fuzzy: search.length > 3 ? 0.2 : false,
-        boost: { name: 10, aliases: 5, related: 3, tags: 2, description: 1 },
-      })
-
-      searchResults = miniSearchResults.map((r) => {
+    if (searchHits) {
+      searchResults = searchHits.map((r) => {
         const result = r as unknown as {
           type: string
           name: string
@@ -268,7 +269,6 @@ export function useSearch(): UseSearchResult {
     }
 
     if (filters.length > 0) {
-      const entityMap = new Map(allEntities.map((e) => [e.id, e]))
       searchResults = searchResults.filter((r) => {
         const entity = entityMap.get(r.id)
         return entity ? entityMatchesFilters(entity) : false
@@ -296,8 +296,8 @@ export function useSearch(): UseSearchResult {
         break
     }
 
-    setResults(searchResults)
-  }, [search, filters, index, allEntities, entityMatchesFilters, sortBy, sortDirection])
+    return searchResults
+  }, [searchHits, filters, index, allEntities, entityMap, entityMatchesFilters, sortBy, sortDirection])
 
   return {
     search,
