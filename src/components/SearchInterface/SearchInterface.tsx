@@ -207,14 +207,13 @@ export function SearchInterface({
       <div className={classes.ribbon}>
         <ActionIcon
           variant={filterButtonVariant}
-          size={34}
           className={classes.funnel}
           onClick={handleFilterButtonClick}
           onMouseEnter={() => setFilterButtonHovered(true)}
           onMouseLeave={() => setFilterButtonHovered(false)}
           title={willClear ? 'Clear all filters (Option+Click)' : filtersVisible ? 'Hide filters' : 'Show filters'}
         >
-          <FunnelIcon size={16} />
+          <FunnelIcon />
         </ActionIcon>
 
         {/* Selected tag ribbon */}
@@ -254,12 +253,12 @@ export function SearchInterface({
             <UnstyledButton className={classes.sortLabel}>
               {currentSortLabel}
               {sortMenuOpen
-                ? <CaretUpIcon size={10} className={classes.caret} />
-                : <CaretDownIcon size={10} className={classes.caret} />}
+                ? <CaretUpIcon className={classes.caret} />
+                : <CaretDownIcon className={classes.caret} />}
             </UnstyledButton>
           </Menu>
           <UnstyledButton className={classes.sortDirection} onClick={handleToggleSortDirection}>
-            {sortDirection === 'asc' ? <ArrowUpIcon size={13} /> : <ArrowDownIcon size={13} />}
+            {sortDirection === 'asc' ? <ArrowUpIcon /> : <ArrowDownIcon />}
           </UnstyledButton>
         </div>
       </div>
@@ -267,7 +266,7 @@ export function SearchInterface({
       {filtersVisible && (
         <>
           {/* Category tabs */}
-          <ScrollArea scrollbarSize={4} offsetScrollbars>
+          <ScrollArea className={classes.tabsScroll} offsetScrollbars>
             <div className={classes.tabs}>
               {TAG_TAXONOMY.map((category) => {
                 const isSelected = category.id === selectedCategory
@@ -303,7 +302,7 @@ export function SearchInterface({
                   data-state={state}
                   onClick={() => handleTagClick(tag)}
                 >
-                  {state && <StateIcon state={state} size={10} />}
+                  {state && <StateIcon state={state} />}
                   {tagToLabel(tag)}
                 </UnstyledButton>
               )
@@ -321,10 +320,10 @@ function modifierToState(modifier: FilterModifier): FilterState {
   return modifier === 'none' ? 'or' : modifier
 }
 
-function StateIcon({ state, size }: { state: FilterState; size: number }) {
-  if (state === 'include') return <PlusIcon size={size} className={classes.stateIcon} data-state={state} />
-  // The "!" reads thinner than the "+", so it gets 1px more
-  if (state === 'exclude') return <ExclamationMarkIcon size={size + 1} className={classes.stateIcon} data-state={state} />
+// Sized by its chip or tag; the "!" gets 1px more (see .stateIcon)
+function StateIcon({ state }: { state: FilterState }) {
+  if (state === 'include') return <PlusIcon className={classes.stateIcon} data-state={state} />
+  if (state === 'exclude') return <ExclamationMarkIcon className={classes.stateIcon} data-state={state} />
   return null
 }
 
@@ -341,11 +340,11 @@ function FilterChip({ filter, onToggleModifier, onRemove }: FilterChipProps) {
   return (
     <div className={classes.chip} data-state={state}>
       <UnstyledButton className={classes.chipLabel} onClick={onToggleModifier}>
-        <StateIcon state={state} size={11} />
+        <StateIcon state={state} />
         {tagToLabel(filter.tag)}
       </UnstyledButton>
       <UnstyledButton className={classes.chipRemove} onClick={onRemove} aria-label={`Remove ${tagToLabel(filter.tag)}`}>
-        <XIcon size={11} />
+        <XIcon />
       </UnstyledButton>
     </div>
   )

@@ -37,7 +37,7 @@ function renderMenuItem(item: MenuItem, index: number) {
         <MantineMenu.Sub.Target>
           <MantineMenu.Sub.Item
             className='menu-item'
-            rightSection={<CaretRightIcon size={13} />}
+            rightSection={<CaretRightIcon />}
           >
             {item.label}
           </MantineMenu.Sub.Item>
@@ -55,7 +55,7 @@ function renderMenuItem(item: MenuItem, index: number) {
       onClick={item.onClick}
       data-type={item.type}
       className='menu-item'
-      rightSection={item.selected ? <CheckIcon size={13} /> : undefined}
+      rightSection={item.selected ? <CheckIcon /> : undefined}
     >
       {item.label}
     </MantineMenu.Item>

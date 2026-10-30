@@ -3,6 +3,7 @@ import { Box, Center, Text, Loader, useMantineTheme } from '@mantine/core'
 import { SearchResult, DataLine, type Link } from './components/SearchResult'
 import { SearchInterface } from './components/SearchInterface'
 import { useSearch } from './hooks/useSearch'
+import classes from './App.module.css'
 import type { SearchResultData } from './types'
 
 /** Cards rendered per batch; more load as the grid scrolls into view */
@@ -88,15 +89,7 @@ function App() {
           <Loader />
         </Center>
       ) : (
-        <Box
-          mt="md"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 375px))',
-            gridAutoRows: 200,
-            gap: 'var(--mantine-spacing-sm)',
-          }}
-        >
+        <Box mt="md" className={classes.grid}>
           {results.slice(0, visibleCount).map((result) => (
             <ResultCard
               key={result.id}

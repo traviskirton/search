@@ -78,13 +78,12 @@ export function ChatPanel({ searchResults, onSearchChange, onFiltersChange }: Ch
         />
         <ActionIcon
           variant="accent"
-          size={40}
-          radius={9}
+          className={classes.send}
           onClick={handleSend}
           disabled={!input.trim() || isLoading}
           aria-label="Send"
         >
-          <PaperPlaneRightIcon size={16} />
+          <PaperPlaneRightIcon />
         </ActionIcon>
       </div>
     </div>

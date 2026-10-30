@@ -36,7 +36,6 @@ export function DataLine({ tags, links }: DataLineProps) {
         links.length === 1 ? (
           <ActionIcon
             variant="subtle"
-            size="sm"
             className={classes.link}
             onClick={(e) => {
               e.stopPropagation()
@@ -44,7 +43,7 @@ export function DataLine({ tags, links }: DataLineProps) {
             }}
             title={links[0].title}
           >
-            <LinkIcon size={14} />
+            <LinkIcon />
           </ActionIcon>
         ) : (
           <Menu
@@ -56,11 +55,10 @@ export function DataLine({ tags, links }: DataLineProps) {
           >
             <ActionIcon
               variant="subtle"
-              size="sm"
               className={classes.link}
               onClick={(e) => e.stopPropagation()}
             >
-              <LinkIcon size={14} />
+              <LinkIcon />
             </ActionIcon>
           </Menu>
         )

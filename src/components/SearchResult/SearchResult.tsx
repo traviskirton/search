@@ -48,7 +48,7 @@ export function SearchResult({
 
   const dots = (
     <ActionIcon variant="subtle" className={classes.dots} data-open={menuOpen || undefined}>
-      <DotsThreeVerticalIcon size={15} />
+      <DotsThreeVerticalIcon />
     </ActionIcon>
   )
 
@@ -76,7 +76,7 @@ export function SearchResult({
           {type && (
             <span className={classes.type}>
               <span className={classes.typeTile}>
-                <TypeIcon type={type.toLowerCase()} size={13} />
+                <TypeIcon type={type.toLowerCase()} />
               </span>
               {tagToLabel(type.toLowerCase())}
             </span>

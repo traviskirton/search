@@ -1,0 +1,7 @@
+/* Results grid: cards wrap between their min and max width, all one height */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--sc-card-min-width), var(--sc-card-max-width)));
+  grid-auto-rows: var(--sc-card-height);
+  gap: var(--sc-card-grid-gap);
+}

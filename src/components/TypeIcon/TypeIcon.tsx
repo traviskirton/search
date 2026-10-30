@@ -13,6 +13,7 @@ import {
   PersonSimpleCircleIcon,
   DiamondIcon,
 } from '@phosphor-icons/react'
+import classes from './TypeIcon.module.css'
 
 export type EntityType =
   | 'person'
@@ -43,14 +44,21 @@ const iconMap: Record<EntityType, PhosphorIcon> = {
 
 export interface TypeIconProps {
   type: EntityType | string
+  /** Without a size, tokens.css sizes the icon (or its parent does, e.g. a type tile) */
   size?: number
   color?: string
 }
 
-export function TypeIcon({ type, size = 18, color }: TypeIconProps) {
+export function TypeIcon({ type, size, color }: TypeIconProps) {
   const IconComponent = iconMap[type as EntityType] || QuestionIcon
 
-  return <IconComponent size={size} style={{ color: color ?? 'var(--sc-ink)' }} />
+  return (
+    <IconComponent
+      size={size}
+      className={size === undefined ? classes.icon : undefined}
+      style={{ color: color ?? 'var(--sc-ink)' }}
+    />
+  )
 }
 
 export const entityTypes = Object.keys(iconMap) as EntityType[]
