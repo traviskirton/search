@@ -2,45 +2,52 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 12px 14px;
+  gap: var(--sc-card-gap);
+  padding: var(--sc-card-padding);
   background: var(--sc-surface);
-  border-radius: 12px;
+  border-radius: var(--sc-card-radius);
   box-shadow: var(--sc-card);
   color: var(--sc-ink);
   text-align: left;
-  transition: box-shadow 120ms ease-out, transform 120ms ease-out;
+  transition:
+    box-shadow var(--sc-duration-lift) var(--sc-ease),
+    transform var(--sc-duration-lift) var(--sc-ease);
 }
 
 .result:hover {
   box-shadow: var(--sc-card-hover);
-  transform: translateY(-3px);
+  transform: translateY(var(--sc-lift));
 }
 
 .titleRow {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--sc-card-gap);
 }
 
 .title {
   flex: 1;
   min-width: 0;
-  font: 700 18px/1.25 var(--mantine-font-family);
-  letter-spacing: -0.01em;
+  font: var(--sc-card-title-font);
+  letter-spacing: var(--sc-card-title-tracking);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .dots {
-  width: 24px;
-  height: 24px;
-  min-width: 24px;
-  margin-right: -4px;
-  border-radius: 6px;
+  width: var(--sc-card-dots-size);
+  height: var(--sc-card-dots-size);
+  min-width: var(--sc-card-dots-size);
+  margin-right: var(--sc-card-dots-offset);
+  border-radius: var(--sc-card-dots-radius);
   color: var(--sc-muted);
   background: transparent;
+}
+
+.dots svg {
+  width: var(--sc-card-dots-icon);
+  height: var(--sc-card-dots-icon);
 }
 
 .result:hover .dots,
@@ -56,45 +63,54 @@
 }
 
 .description {
-  font: 400 13px/17px var(--mantine-font-family);
+  font: var(--sc-card-description-font);
   color: var(--sc-ink-2);
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: var(--sc-card-description-lines);
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .dataLine {
-  margin-top: auto; /* the card's 6px flex gap is the minimum space above it */
+  margin-top: auto; /* the card's flex gap is the minimum space above it */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--sc-card-data-gap);
   overflow: hidden;
 }
 
 .badges {
   display: flex;
-  gap: 4px;
+  gap: var(--sc-badges-gap);
   overflow: hidden;
   min-width: 0;
 }
 
 .badge {
   flex: none;
-  font: 500 10px/1 var(--mantine-font-family-monospace);
-  letter-spacing: 0.1em;
+  font: var(--sc-badge-font);
+  letter-spacing: var(--sc-badge-tracking);
   text-transform: uppercase;
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: var(--sc-badge-padding);
+  border-radius: var(--sc-badge-radius);
   background: var(--sc-well);
   box-shadow: var(--sc-well-shadow-sm);
   color: var(--sc-ink-2);
 }
 
+.link.link {
+  --ai-size: var(--sc-card-link-size);
+}
+
 .link {
   color: var(--sc-muted);
   background: transparent;
+}
+
+.link svg {
+  width: var(--sc-card-link-icon);
+  height: var(--sc-card-link-icon);
 }
 
 .result:hover .link,
@@ -113,29 +129,34 @@
 .type {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font: 500 11px/1 var(--mantine-font-family-monospace);
-  letter-spacing: 0.08em;
+  gap: var(--sc-card-type-gap);
+  font: var(--sc-card-type-font);
+  letter-spacing: var(--sc-card-type-tracking);
   text-transform: uppercase;
   color: var(--sc-ink);
 }
 
 .typeTile {
-  width: 22px;
-  height: 22px;
+  width: var(--sc-type-tile-size);
+  height: var(--sc-type-tile-size);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: var(--sc-type-tile-radius);
   background: var(--sc-well);
   box-shadow: var(--sc-well-shadow-sm);
+}
+
+.typeTile svg {
+  width: var(--sc-type-tile-icon);
+  height: var(--sc-type-tile-icon);
 }
 
 .updated {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font: 400 11px/1 var(--mantine-font-family);
+  gap: var(--sc-card-updated-gap);
+  font: var(--sc-card-updated-font);
   color: var(--sc-muted);
 }
 
@@ -144,13 +165,13 @@
 }
 
 .avatar {
-  width: 15px;
-  height: 15px;
+  width: var(--sc-avatar-size);
+  height: var(--sc-avatar-size);
   border-radius: 50%;
   background: var(--sc-accent);
   color: var(--sc-on-accent);
-  font-size: 7px;
-  font-weight: 700;
+  font-size: var(--sc-avatar-font-size);
+  font-weight: var(--sc-avatar-font-weight);
   display: flex;
   align-items: center;
   justify-content: center;

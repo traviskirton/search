@@ -1,45 +1,54 @@
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 12px;
+  gap: var(--sc-panel-gap);
+  padding: var(--sc-panel-padding);
   background: var(--sc-surface);
-  border-radius: 12px;
+  border-radius: var(--sc-panel-radius);
   box-shadow: var(--sc-card);
 }
 
 /* Search input (well) */
 .input.input {
-  height: 54px;
-  padding: 0 16px;
-  border-radius: 10px;
-  font: 500 24px/1 var(--mantine-font-family);
+  height: var(--sc-input-height);
+  padding: var(--sc-input-padding);
+  border-radius: var(--sc-input-radius);
+  font: var(--sc-input-font);
 }
 
 .ribbon {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--sc-ribbon-gap);
+}
+
+.funnel.funnel {
+  --ai-size: var(--sc-funnel-size);
 }
 
 .funnel[data-variant='key'] {
   color: var(--sc-muted);
 }
 
+.funnel svg {
+  width: var(--sc-funnel-icon);
+  height: var(--sc-funnel-icon);
+}
+
 .chips {
   flex: 1;
   min-width: 0;
-  margin-left: 8px; /* 8px past the ribbon gap, so chips never butt against the funnel */
+  margin-left: var(--sc-chips-inset);
   --fade-left: 0px;
   --fade-right: 0px;
 }
 
 .chips[data-fade-left] {
-  --fade-left: 16px;
+  --fade-left: var(--sc-chips-fade);
 }
 
 .chips[data-fade-right] {
-  --fade-right: 16px;
+  --fade-right: var(--sc-chips-fade);
 }
 
 .chipsViewport {
@@ -49,8 +58,8 @@
 
 .chipRow {
   display: flex;
-  gap: 8px;
-  padding: 4px 2px 6px;
+  gap: var(--sc-chip-row-gap);
+  padding: var(--sc-chip-row-padding);
 }
 
 /* Filter state faces — shared by ribbon chips and panel tags. All states are latched. */
@@ -58,7 +67,7 @@
 .tag[data-state] {
   background: var(--sc-or-face);
   box-shadow: var(--sc-or-shadow);
-  transform: translateY(1px);
+  transform: translateY(var(--sc-press));
   color: var(--sc-ink);
 }
 
@@ -74,11 +83,19 @@
   box-shadow: var(--sc-exc-shadow);
 }
 
+/* + and ! icons; .chip and .tag set --state-icon */
+.stateIcon {
+  width: var(--state-icon);
+  height: var(--state-icon);
+}
+
 .stateIcon[data-state='include'] {
   color: var(--sc-inc-ink);
 }
 
 .stateIcon[data-state='exclude'] {
+  width: calc(var(--state-icon) + var(--sc-state-icon-bump));
+  height: calc(var(--state-icon) + var(--sc-state-icon-bump));
   color: var(--sc-exc-ink);
 }
 
@@ -86,9 +103,10 @@
 .chip {
   display: flex;
   flex: none;
-  height: 30px;
-  border-radius: 8px;
-  font: 600 13px/1 var(--mantine-font-family);
+  height: var(--sc-chip-height);
+  border-radius: var(--sc-chip-radius);
+  font: var(--sc-chip-font);
+  --state-icon: var(--sc-chip-icon);
 }
 
 .chipLabel,
@@ -100,15 +118,20 @@
 }
 
 .chipLabel {
-  gap: 7px;
-  padding: 0 9px 0 10px;
+  gap: var(--sc-chip-gap);
+  padding: var(--sc-chip-padding);
   white-space: nowrap;
 }
 
 .chipRemove {
-  padding: 0 8px;
+  padding: var(--sc-chip-remove-padding);
   color: var(--sc-muted);
-  border-left: 1px solid var(--sc-line);
+  border-left: var(--sc-border-hair) solid var(--sc-line);
+}
+
+.chipRemove svg {
+  width: var(--sc-chip-icon);
+  height: var(--sc-chip-icon);
 }
 
 .chipRemove:hover {
@@ -119,21 +142,23 @@
 .sort {
   display: flex;
   flex: none;
-  height: 32px;
-  border-radius: 8px;
+  height: var(--sc-sort-height);
+  border-radius: var(--sc-sort-radius);
   background: var(--sc-surface);
   box-shadow: var(--sc-key);
-  font: 500 12px/1 var(--mantine-font-family-monospace);
-  letter-spacing: 0.06em;
+  font: var(--sc-sort-font);
+  letter-spacing: var(--sc-sort-tracking);
   text-transform: uppercase;
   color: var(--sc-ink);
-  transition: box-shadow 80ms ease-out, transform 80ms ease-out;
+  transition:
+    box-shadow var(--sc-duration-press) var(--sc-ease),
+    transform var(--sc-duration-press) var(--sc-ease);
 }
 
 .sort[data-open] {
   background: var(--sc-latched);
   box-shadow: var(--sc-latched-shadow);
-  transform: translateY(1px);
+  transform: translateY(var(--sc-press));
 }
 
 .sortLabel,
@@ -147,37 +172,48 @@
 }
 
 .sortLabel {
-  gap: 8px;
-  padding: 0 11px;
+  gap: var(--sc-sort-gap);
+  padding: var(--sc-sort-label-padding);
 }
 
 .caret {
+  width: var(--sc-sort-caret);
+  height: var(--sc-sort-caret);
   color: var(--sc-muted);
 }
 
 .sortDirection {
-  padding: 0 10px;
-  border-left: 1px solid var(--sc-line);
+  padding: var(--sc-sort-direction-padding);
+  border-left: var(--sc-border-hair) solid var(--sc-line);
+}
+
+.sortDirection svg {
+  width: var(--sc-sort-icon);
+  height: var(--sc-sort-icon);
 }
 
 /* Filter panel */
+.tabsScroll.tabsScroll {
+  --scrollarea-scrollbar-size: var(--sc-tabs-scrollbar);
+}
+
 .tabs {
   display: flex;
-  gap: 4px;
-  padding-bottom: 1px;
+  gap: var(--sc-tabs-gap);
+  padding-bottom: var(--sc-space-hair);
 }
 
 .tab {
   flex: none;
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 12px;
-  border-radius: 7px;
+  gap: var(--sc-tab-gap);
+  padding: var(--sc-tab-padding);
+  border-radius: var(--sc-tab-radius);
   background: var(--sc-surface);
   box-shadow: var(--sc-key-sm);
-  font: 500 12px/1 var(--mantine-font-family-monospace);
-  letter-spacing: 0.06em;
+  font: var(--sc-tab-font);
+  letter-spacing: var(--sc-tab-tracking);
   text-transform: uppercase;
   color: var(--sc-muted);
 }
@@ -189,7 +225,7 @@
 .tab[data-active] {
   background: var(--sc-latched);
   box-shadow: var(--sc-latched-shadow);
-  transform: translateY(1px);
+  transform: translateY(var(--sc-press));
   color: var(--sc-ink);
 }
 
@@ -199,37 +235,38 @@
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
+  width: var(--sc-tab-dot-size);
+  height: var(--sc-tab-dot-size);
   border-radius: 50%;
   background: var(--sc-accent);
-  box-shadow: 0 0 6px var(--sc-accent);
+  box-shadow: var(--sc-tab-dot-glow);
 }
 
 .divider {
-  height: 1px;
+  height: var(--sc-border-hair);
   background: var(--sc-line);
-  box-shadow: 0 1px 0 var(--sc-hi);
+  box-shadow: var(--sc-hi-shadow);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 7px;
-  padding-bottom: 2px;
+  gap: var(--sc-tags-gap);
+  padding-bottom: var(--sc-space-xxxs);
 }
 
 .tag {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 10px;
-  border-radius: 7px;
+  gap: var(--sc-tag-gap);
+  padding: var(--sc-tag-padding);
+  border-radius: var(--sc-tag-radius);
   background: var(--sc-surface);
   box-shadow: var(--sc-key-sm);
-  font: 500 13px/1 var(--mantine-font-family);
+  font: var(--sc-tag-font);
   color: var(--sc-ink-2);
   white-space: nowrap;
+  --state-icon: var(--sc-tag-icon);
 }
 
 .tag:not([data-state]):active {
@@ -238,5 +275,5 @@
 }
 
 .tag[data-state] {
-  font-weight: 600;
+  font-weight: var(--sc-tag-weight-on);
 }

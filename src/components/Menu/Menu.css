@@ -1,17 +1,22 @@
 .menu-dropdown {
   background: var(--sc-surface);
   border: 0;
-  border-radius: 10px;
-  padding: 5px;
-  min-width: 172px;
+  border-radius: var(--sc-menu-radius);
+  padding: var(--sc-menu-padding);
+  min-width: var(--sc-menu-min-width);
   box-shadow: var(--sc-menu);
 }
 
 .menu-item {
-  padding: 10px 11px;
-  border-radius: 7px;
-  font: 500 14px/1 var(--mantine-font-family);
+  padding: var(--sc-menu-item-padding);
+  border-radius: var(--sc-menu-item-radius);
+  font: var(--sc-menu-item-font);
   color: var(--sc-ink);
+}
+
+.menu-item svg {
+  width: var(--sc-menu-icon);
+  height: var(--sc-menu-icon);
 }
 
 .menu-item:hover,
@@ -25,7 +30,7 @@
 }
 
 .menu-divider {
-  margin: 5px 4px;
-  border-top: 1px solid var(--sc-line) !important;
-  box-shadow: 0 1px 0 var(--sc-hi);
+  margin: var(--sc-menu-divider-margin);
+  border-top: var(--sc-border-hair) solid var(--sc-line) !important;
+  box-shadow: var(--sc-hi-shadow);
 }
