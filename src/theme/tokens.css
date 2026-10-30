@@ -1,39 +1,205 @@
-/* Search · Control Surface (Slate) — semantic tokens.
+/* Search · Control Surface (Slate) — every design value lives here.
    Import once (e.g. in main.tsx after @mantine/core/styles.css).
-   Mantine sets data-mantine-color-scheme on <html>. */
+   Mantine sets data-mantine-color-scheme on <html>.
+
+   Three tiers:
+   1. Primitives: palette ramps and scales, no colour scheme.
+   2. Semantic colour and depth, light and dark (plus a few scheme-free roles).
+   3. Components: each component's own measures. Odd values live here.
+
+   theme.ts, the CSS modules and the TSX reference these and hold no raw values.
+   Literal on purpose: breakpoints (CSS can't read var() inside @media) and
+   mechanics (0, 100%, 50%, auto, the #000 in the chip row's fade mask). */
+
+/* 1 · Primitives */
+
+:root {
+  /* palette, light → dark */
+  --sc-signal-0: #fffbe6;
+  --sc-signal-1: #fff4bf;
+  --sc-signal-2: #feec94;
+  --sc-signal-3: #fbe36a;
+  --sc-signal-4: #f9dc55;
+  --sc-signal-5: #f7d84a;
+  --sc-signal-6: #d6b928;
+  --sc-signal-7: #b09a24;
+  --sc-signal-8: #8a781c;
+  --sc-signal-9: #665913;
+
+  /* light-mode neutrals */
+  --sc-slate-0: #f0f2f5;
+  --sc-slate-1: #e3e6eb;
+  --sc-slate-2: #d7dbe1;
+  --sc-slate-3: #ccd1d8;
+  --sc-slate-4: #c9ced6;
+  --sc-slate-5: #b5bcc6;
+  --sc-slate-6: #8f98a6;
+  --sc-slate-7: #5f6773;
+  --sc-slate-8: #363d47;
+  --sc-slate-9: #161a20;
+
+  /* Mantine dark scale: 0 text … 7 body bg */
+  --sc-dark-0: #e6eaf0;
+  --sc-dark-1: #c3c9d3;
+  --sc-dark-2: #8f98a6;
+  --sc-dark-3: #5f6773;
+  --sc-dark-4: #313744;
+  --sc-dark-5: #2d323b;
+  --sc-dark-6: #222730;
+  --sc-dark-7: #14171c;
+  --sc-dark-8: #0f1115;
+  --sc-dark-9: #090b0e;
+
+  --sc-include-0: #e6f6f1;
+  --sc-include-1: #cdebe3;
+  --sc-include-2: #9fdccb;
+  --sc-include-3: #6fe2c0;
+  --sc-include-4: #3cd3a7;
+  --sc-include-5: #1bb48b;
+  --sc-include-6: #0f9e7a;
+  --sc-include-7: #0a7a5e;
+  --sc-include-8: #075c47;
+  --sc-include-9: #043d2f;
+
+  --sc-exclude-0: #fdeef1;
+  --sc-exclude-1: #f7d2d9;
+  --sc-exclude-2: #f2a9b5;
+  --sc-exclude-3: #ff8695;
+  --sc-exclude-4: #ff5a6f;
+  --sc-exclude-5: #ea4359;
+  --sc-exclude-6: #e2364c;
+  --sc-exclude-7: #b8233a;
+  --sc-exclude-8: #8c1a2c;
+  --sc-exclude-9: #5e111e;
+
+  /* type */
+  --sc-font-sans: 'Chivo', system-ui, -apple-system, sans-serif;
+  --sc-font-mono: 'Chivo Mono', ui-monospace, monospace;
+
+  --sc-font-size-xs: 10px;
+  --sc-font-size-sm: 12px;
+  --sc-font-size-md: 14px;
+  --sc-font-size-lg: 16px;
+  --sc-font-size-xl: 18px;
+
+  --sc-font-weight-regular: 400;
+  --sc-font-weight-medium: 500;
+  --sc-font-weight-semibold: 600;
+  --sc-font-weight-bold: 700;
+  --sc-font-weight-extrabold: 800;
+
+  --sc-line-height-solid: 1;  /* single-line controls: no leading */
+  --sc-line-height-xs: 1.4;
+  --sc-line-height-sm: 1.45;
+  --sc-line-height-md: 1.5;
+  --sc-line-height-lg: 1.55;
+  --sc-line-height-xl: 1.6;
+
+  --sc-tracking-none: 0;
+  --sc-tracking-xsmall: 0.06em;  /* tabs, sort */
+  --sc-tracking-small: 0.08em;   /* type labels */
+  --sc-tracking-medium: 0.1em;   /* badges */
+  --sc-tracking-large: 0.14em;   /* section labels */
+
+  /* headings */
+  --sc-h1-size: 34px;
+  --sc-h1-line-height: 1.2;
+  --sc-h2-size: 26px;
+  --sc-h2-line-height: 1.3;
+  --sc-h3-size: 22px;
+  --sc-h3-line-height: 1.35;
+  --sc-h4-size: var(--sc-font-size-xl);
+  --sc-h4-line-height: var(--sc-line-height-xs);
+  --sc-h5-size: var(--sc-font-size-lg);
+  --sc-h5-line-height: var(--sc-line-height-md);
+  --sc-h6-size: var(--sc-font-size-md);
+  --sc-h6-line-height: var(--sc-line-height-md);
+
+  /* space */
+  --sc-space-none: 0px;
+  --sc-space-hair: 1px;
+  --sc-space-xxxs: 2px;
+  --sc-space-xxs: 4px;
+  --sc-space-xs: 8px;
+  --sc-space-sm: 12px;
+  --sc-space-md: 16px;
+  --sc-space-lg: 20px;
+  --sc-space-xl: 24px;
+  --sc-space-xxl: 32px;
+  --sc-space-xxxl: 64px;
+
+  /* radius */
+  --sc-radius-xs: 4px;   /* badges */
+  --sc-radius-sm: 6px;   /* small buttons, icon tiles */
+  --sc-radius-md: 8px;   /* keys, chips */
+  --sc-radius-lg: 12px;  /* panels, cards */
+  --sc-radius-xl: 14px;
+
+  /* border width */
+  --sc-border-xsmall: 1px;
+  --sc-border-small: 2px;
+  --sc-border-medium: 4px;
+  --sc-border-large: 8px;
+  --sc-border-xlarge: 16px;
+
+  /* icon size */
+  --sc-icon-xxsmall: 8px;
+  --sc-icon-xsmall: 12px;
+  --sc-icon-small: 16px;
+  --sc-icon-medium: 24px;
+  --sc-icon-large: 32px;
+  --sc-icon-xlarge: 40px;
+  --sc-icon-xxlarge: 64px;
+
+  /* control height */
+  --sc-control-sm: 30px;   /* filter chip */
+  --sc-control-md: 32px;   /* sort key */
+  --sc-control-lg: 34px;   /* funnel key */
+  --sc-control-xl: 40px;   /* chat composer */
+  --sc-control-xxl: 54px;  /* search input */
+
+  /* motion */
+  --sc-duration-press: 80ms;   /* keys */
+  --sc-duration-lift: 120ms;   /* cards */
+  --sc-ease: ease-out;
+  --sc-press: 1px;             /* a latched key sits this far down */
+  --sc-lift: -3px;             /* a hovered card rises this far */
+}
+
+/* 2 · Semantic colour and depth */
 
 :root,
 [data-mantine-color-scheme='light'] {
   /* surfaces */
-  --sc-bg: #d7dbe1;          /* chassis / page */
-  --sc-surface: #f0f2f5;     /* raised key, card, panel, menu */
-  --sc-latched: #e3e6eb;     /* pushed-in neutral key */
-  --sc-well: #ccd1d8;        /* recessed: inputs, badges, icon tiles */
-  --sc-line: #c9ced6;
+  --sc-bg: var(--sc-slate-2);        /* chassis / page */
+  --sc-surface: var(--sc-slate-0);   /* raised key, card, panel, menu */
+  --sc-latched: var(--sc-slate-1);   /* pushed-in neutral key */
+  --sc-well: var(--sc-slate-3);      /* recessed: inputs, badges, icon tiles */
+  --sc-line: var(--sc-slate-4);
   --sc-hi: rgba(255, 255, 255, 0.7);   /* 1px highlight under dividers */
 
   /* ink */
-  --sc-ink: #161a20;
-  --sc-ink-2: #363d47;
-  --sc-muted: #5f6773;
+  --sc-ink: var(--sc-slate-9);
+  --sc-ink-2: var(--sc-slate-8);
+  --sc-muted: var(--sc-slate-7);
 
   /* signal (brand accent) */
-  --sc-accent: #f7d84a;
-  --sc-on-accent: #161a20;
+  --sc-accent: var(--sc-signal-5);
+  --sc-on-accent: var(--sc-slate-9);
 
   /* filter states */
   --sc-or-face: #d2d6dd;
-  --sc-inc: #0f9e7a;
-  --sc-inc-ink: #0a7a5e;
-  --sc-inc-face: #cdebe3;
-  --sc-exc: #e2364c;
-  --sc-exc-ink: #b8233a;
-  --sc-exc-face: #f7d2d9;
+  --sc-inc: var(--sc-include-6);
+  --sc-inc-ink: var(--sc-include-7);
+  --sc-inc-face: var(--sc-include-1);
+  --sc-exc: var(--sc-exclude-6);
+  --sc-exc-ink: var(--sc-exclude-7);
+  --sc-exc-face: var(--sc-exclude-1);
 
   /* depth */
-  --sc-key: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 0 #b5bcc6, 0 2px 3px -1px rgba(25,35,55,.18);
+  --sc-key: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 0 var(--sc-slate-5), 0 2px 3px -1px rgba(25,35,55,.18);
   --sc-key-sm: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 0 #c2c8d0, 0 1px 2px rgba(25,35,55,.12);
-  --sc-key-accent: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 0 #d6b928, 0 2px 3px -1px rgba(70,60,10,.18);
+  --sc-key-accent: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 0 var(--sc-signal-6), 0 2px 3px -1px rgba(70,60,10,.18);
   --sc-latched-shadow: inset 0 1px 2px rgba(25,35,55,.2), inset 0 0 0 1px rgba(25,35,55,.07), 0 1px 0 rgba(255,255,255,.75);
   --sc-or-shadow: inset 0 1px 2px rgba(25,35,55,.18), inset 0 0 0 1px rgba(25,35,55,.11), 0 1px 0 rgba(255,255,255,.75);
   --sc-inc-shadow: inset 0 1px 2px rgba(10,85,65,.22), inset 0 0 0 1px rgba(15,158,122,.4), 0 1px 0 rgba(255,255,255,.75);
@@ -46,38 +212,198 @@
 }
 
 [data-mantine-color-scheme='dark'] {
-  --sc-bg: #14171c;
-  --sc-surface: #222730;
+  --sc-bg: var(--sc-dark-7);
+  --sc-surface: var(--sc-dark-6);
   --sc-latched: #1b1f26;
-  --sc-well: #0f1115;
-  --sc-line: #313744;
+  --sc-well: var(--sc-dark-8);
+  --sc-line: var(--sc-dark-4);
   --sc-hi: rgba(255, 255, 255, 0.03);
 
-  --sc-ink: #e6eaf0;
-  --sc-ink-2: #c3c9d3;
-  --sc-muted: #8f98a6;
+  --sc-ink: var(--sc-dark-0);
+  --sc-ink-2: var(--sc-dark-1);
+  --sc-muted: var(--sc-dark-2);
 
   --sc-accent: #f5d84c;
-  --sc-on-accent: #14171c;
+  --sc-on-accent: var(--sc-dark-7);
 
-  --sc-or-face: #2d323b;
-  --sc-inc: #3cd3a7;
-  --sc-inc-ink: #6fe2c0;
+  --sc-or-face: var(--sc-dark-5);
+  --sc-inc: var(--sc-include-4);
+  --sc-inc-ink: var(--sc-include-3);
   --sc-inc-face: #163a33;
-  --sc-exc: #ff5a6f;
-  --sc-exc-ink: #ff8695;
+  --sc-exc: var(--sc-exclude-4);
+  --sc-exc-ink: var(--sc-exclude-3);
   --sc-exc-face: #44202a;
 
-  --sc-key: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 #090b0e, 0 2px 4px -1px rgba(0,0,0,.45);
-  --sc-key-sm: inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 #090b0e, 0 1px 2px rgba(0,0,0,.35);
-  --sc-key-accent: inset 0 1px 0 rgba(255,255,255,.5), 0 1px 0 #b09a24, 0 2px 4px -1px rgba(0,0,0,.45);
+  --sc-key: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 var(--sc-dark-9), 0 2px 4px -1px rgba(0,0,0,.45);
+  --sc-key-sm: inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 var(--sc-dark-9), 0 1px 2px rgba(0,0,0,.35);
+  --sc-key-accent: inset 0 1px 0 rgba(255,255,255,.5), 0 1px 0 var(--sc-signal-7), 0 2px 4px -1px rgba(0,0,0,.45);
   --sc-latched-shadow: inset 0 1px 3px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.05);
   --sc-or-shadow: inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.07), 0 1px 0 rgba(255,255,255,.04);
   --sc-inc-shadow: inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(60,211,167,.38), 0 1px 0 rgba(255,255,255,.04);
   --sc-exc-shadow: inset 0 1px 3px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,90,111,.38), 0 1px 0 rgba(255,255,255,.04);
   --sc-well-shadow: inset 0 2px 5px rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.05);
   --sc-well-shadow-sm: inset 0 1px 3px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.04);
-  --sc-card: inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 #090b0e, 0 4px 8px -3px rgba(0,0,0,.65);
-  --sc-card-hover: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 #090b0e, 0 20px 34px -12px rgba(0,0,0,.85);
+  --sc-card: inset 0 1px 0 rgba(255,255,255,.06), 0 1px 0 var(--sc-dark-9), 0 4px 8px -3px rgba(0,0,0,.65);
+  --sc-card-hover: inset 0 1px 0 rgba(255,255,255,.08), 0 1px 0 var(--sc-dark-9), 0 20px 34px -12px rgba(0,0,0,.85);
   --sc-menu: 0 22px 44px -10px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+/* Same in both schemes */
+:root {
+  --sc-border-hair: var(--sc-border-xsmall);          /* dividers, split-key seams */
+  --sc-hi-shadow: 0 var(--sc-border-hair) 0 var(--sc-hi);  /* highlight under a divider */
+
+  --sc-on-danger: #fff;
+  --sc-key-danger: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 1px 0 var(--sc-exc-ink), 0 2px 3px -1px rgba(70, 10, 20, 0.2);
+
+  --sc-focus-width: var(--sc-border-small);
+  --sc-focus-offset: var(--sc-space-xxxs);
+  --sc-disabled-opacity: 0.5;
+}
+
+/* 3 · Components */
+
+:root {
+  /* search panel */
+  --sc-panel-gap: var(--sc-space-sm);
+  --sc-panel-padding: var(--sc-space-sm);
+  --sc-panel-radius: var(--sc-radius-lg);
+
+  /* search input */
+  --sc-input-height: var(--sc-control-xxl);
+  --sc-input-padding: 0 var(--sc-space-md);
+  --sc-input-radius: 10px;
+  --sc-input-font: var(--sc-font-weight-medium) 24px/var(--sc-line-height-solid) var(--sc-font-sans);
+
+  /* ribbon: funnel key, chip row, sort key */
+  --sc-ribbon-gap: 10px;
+  --sc-funnel-size: var(--sc-control-lg);
+  --sc-funnel-icon: var(--sc-icon-small);
+  --sc-chips-inset: var(--sc-space-xs);  /* past the ribbon gap, so chips never butt against the funnel */
+  --sc-chips-fade: var(--sc-space-md);
+  --sc-chip-row-gap: var(--sc-space-xs);
+  --sc-chip-row-padding: var(--sc-space-xxs) var(--sc-space-xxxs) 6px;
+
+  /* filter chip (ribbon) */
+  --sc-chip-height: var(--sc-control-sm);
+  --sc-chip-radius: var(--sc-radius-md);
+  --sc-chip-font: var(--sc-font-weight-semibold) 13px/var(--sc-line-height-solid) var(--sc-font-sans);
+  --sc-chip-gap: 7px;
+  --sc-chip-padding: 0 9px 0 10px;
+  --sc-chip-remove-padding: 0 var(--sc-space-xs);
+  --sc-chip-icon: 11px;
+  --sc-state-icon-bump: 1px;  /* the "!" reads thinner than the "+", so it gets 1px more */
+
+  /* sort key */
+  --sc-sort-height: var(--sc-control-md);
+  --sc-sort-radius: var(--sc-radius-md);
+  --sc-sort-font: var(--sc-font-weight-medium) var(--sc-font-size-sm)/var(--sc-line-height-solid) var(--sc-font-mono);
+  --sc-sort-tracking: var(--sc-tracking-xsmall);
+  --sc-sort-gap: var(--sc-space-xs);
+  --sc-sort-label-padding: 0 11px;
+  --sc-sort-direction-padding: 0 10px;
+  --sc-sort-caret: 10px;
+  --sc-sort-icon: 13px;
+
+  /* category tabs */
+  --sc-tabs-gap: var(--sc-space-xxs);
+  --sc-tabs-scrollbar: 4px;
+  --sc-tab-gap: 7px;
+  --sc-tab-padding: 9px var(--sc-space-sm);
+  --sc-tab-radius: 7px;
+  --sc-tab-font: var(--sc-font-weight-medium) var(--sc-font-size-sm)/var(--sc-line-height-solid) var(--sc-font-mono);
+  --sc-tab-tracking: var(--sc-tracking-xsmall);
+  --sc-tab-dot-size: 6px;
+  --sc-tab-dot-glow: 0 0 6px var(--sc-accent);
+
+  /* filter tags (panel) */
+  --sc-tags-gap: var(--sc-space-xs) 7px;
+  --sc-tag-gap: 6px;
+  --sc-tag-padding: var(--sc-space-xs) 10px;
+  --sc-tag-radius: 7px;
+  --sc-tag-font: var(--sc-font-weight-medium) 13px/var(--sc-line-height-solid) var(--sc-font-sans);
+  --sc-tag-weight-on: var(--sc-font-weight-semibold);
+  --sc-tag-icon: 10px;
+
+  /* result card */
+  --sc-card-min-width: 320px;
+  --sc-card-max-width: 375px;
+  --sc-card-height: 200px;
+  --sc-card-grid-gap: var(--sc-space-sm);
+  --sc-card-gap: 6px;
+  --sc-card-padding: var(--sc-space-sm) 14px;
+  --sc-card-radius: var(--sc-radius-lg);
+  --sc-card-title-font: var(--sc-font-weight-bold) var(--sc-font-size-xl)/1.25 var(--sc-font-sans);
+  --sc-card-title-tracking: -0.01em;
+  --sc-card-description-font: var(--sc-font-weight-regular) 13px/17px var(--sc-font-sans);
+  --sc-card-description-lines: 5;
+  --sc-card-dots-size: 24px;
+  --sc-card-dots-offset: -4px;  /* pulls the ⋮ key into the card's padding */
+  --sc-card-dots-radius: var(--sc-radius-sm);
+  --sc-card-dots-icon: 15px;
+  --sc-card-data-gap: var(--sc-space-xs);
+  --sc-card-link-size: 22px;
+  --sc-card-link-icon: 14px;
+  --sc-card-type-gap: 7px;
+  --sc-card-type-font: var(--sc-font-weight-medium) 11px/var(--sc-line-height-solid) var(--sc-font-mono);
+  --sc-card-type-tracking: var(--sc-tracking-small);
+  --sc-card-updated-gap: 5px;
+  --sc-card-updated-font: var(--sc-font-weight-regular) 11px/var(--sc-line-height-solid) var(--sc-font-sans);
+
+  /* badge */
+  --sc-badges-gap: var(--sc-space-xxs);
+  --sc-badge-font: var(--sc-font-weight-medium) var(--sc-font-size-xs)/var(--sc-line-height-solid) var(--sc-font-mono);
+  --sc-badge-tracking: var(--sc-tracking-medium);
+  --sc-badge-padding: var(--sc-space-xxs) 6px;
+  --sc-badge-radius: var(--sc-radius-xs);
+
+  /* type tile and icon */
+  --sc-type-tile-size: 22px;
+  --sc-type-tile-radius: var(--sc-radius-sm);
+  --sc-type-tile-icon: 13px;
+  --sc-type-icon: 18px;  /* a TypeIcon outside a tile */
+
+  /* avatar */
+  --sc-avatar-size: 15px;
+  --sc-avatar-font-size: 7px;
+  --sc-avatar-font-weight: var(--sc-font-weight-bold);
+
+  /* menu */
+  --sc-menu-radius: 10px;
+  --sc-menu-padding: 5px;
+  --sc-menu-min-width: 172px;
+  --sc-menu-item-padding: 10px 11px;
+  --sc-menu-item-radius: 7px;
+  --sc-menu-item-font: var(--sc-font-weight-medium) var(--sc-font-size-md)/var(--sc-line-height-solid) var(--sc-font-sans);
+  --sc-menu-icon: 13px;
+  --sc-menu-divider-margin: 5px var(--sc-space-xxs);
+
+  /* chat */
+  --sc-chat-width: 380px;
+  --sc-chat-radius: var(--sc-radius-lg);
+  --sc-chat-header-padding: var(--sc-space-sm) 14px;
+  --sc-chat-title-font: var(--sc-font-weight-bold) var(--sc-font-size-lg)/var(--sc-line-height-solid) var(--sc-font-sans);
+  --sc-chat-status-font: var(--sc-font-weight-medium) var(--sc-font-size-xs)/var(--sc-line-height-solid) var(--sc-font-mono);
+  --sc-chat-status-tracking: var(--sc-tracking-medium);
+  --sc-chat-messages-gap: 14px;
+  --sc-chat-messages-padding: 14px;
+  --sc-chat-user-max-width: 78%;
+  --sc-chat-user-padding: 9px var(--sc-space-sm);
+  --sc-chat-user-radius: var(--sc-radius-lg) var(--sc-radius-lg) var(--sc-radius-xs) var(--sc-radius-lg);
+  --sc-chat-user-font: var(--sc-font-weight-medium) var(--sc-font-size-md)/var(--sc-line-height-xs) var(--sc-font-sans);
+  --sc-chat-assistant-max-width: 90%;
+  --sc-chat-assistant-padding: 11px 13px;
+  --sc-chat-assistant-radius: var(--sc-radius-xs) var(--sc-radius-lg) var(--sc-radius-lg) var(--sc-radius-lg);
+  --sc-chat-assistant-font: var(--sc-font-weight-regular) var(--sc-font-size-md)/var(--sc-line-height-sm) var(--sc-font-sans);
+  --sc-chat-empty-padding: var(--sc-space-xl) 0;
+  --sc-chat-empty-font: var(--sc-font-weight-regular) var(--sc-font-size-md)/var(--sc-line-height-sm) var(--sc-font-sans);
+  --sc-chat-error-font: var(--sc-font-weight-medium) 13px/var(--sc-line-height-xs) var(--sc-font-sans);
+  --sc-chat-composer-gap: var(--sc-space-xs);
+  --sc-chat-composer-padding: 10px;
+  --sc-chat-input-height: var(--sc-control-xl);
+  --sc-chat-input-radius: 9px;
+  --sc-chat-input-font: var(--sc-font-weight-regular) var(--sc-font-size-md)/var(--sc-line-height-solid) var(--sc-font-sans);
+  --sc-chat-send-size: var(--sc-control-xl);
+  --sc-chat-send-radius: 9px;
+  --sc-chat-send-icon: var(--sc-icon-small);
 }

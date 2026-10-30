@@ -29,10 +29,10 @@ declare module '@mantine/core' {
       xxlarge: string
     }
     fontWeights: {
-      regular: number
-      medium: number
-      semibold: number
-      bold: number
+      regular: string
+      medium: string
+      semibold: string
+      bold: string
     }
     fontFamilies: {
       sans: string
