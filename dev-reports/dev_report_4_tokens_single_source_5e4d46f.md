@@ -1,6 +1,6 @@
 # Development Report: tokens.css as the Single Source of Design Values
 
-**Commit:** [hash]
+**Commit:** 5e4d46f
 **Phase:** Design system / Theming
 **Breakthrough:** no
 
