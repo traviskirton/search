@@ -49,3 +49,11 @@ Added links, CORS support, and general code cleanup.
 **Pre-Rebrand Baseline**
 
 Last state on the original Mantine/Satoshi look before the Control Surface (Slate) restyle. Includes the unwired ChatPanel/useChat WIP and the design handoff in `handoffs/`.
+
+---
+
+## v7-pre-tokens
+
+**Pre-Tokens Baseline**
+
+Control Surface (Slate) look with raw values still in the CSS modules, theme.ts and TSX. Last state before every design value moved into `src/theme/tokens.css`.
